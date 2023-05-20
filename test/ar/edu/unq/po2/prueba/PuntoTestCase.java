@@ -29,5 +29,12 @@ class PuntoTestCase {
 	
 		assertEquals(2f, punto2.getX());
 	}
+	
+	@Test
+	void testPrueba2() {
+		when(punto2.getX()).thenReturn(4f);
+	
+		assertEquals(4f, punto2.getX());
+	}
 
 }
