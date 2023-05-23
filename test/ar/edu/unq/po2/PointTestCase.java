@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.prueba;
+package ar.edu.unq.po2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,6 +45,16 @@ class PointTestCase {
 		
 		assertEquals(ejeXEsperado, puntoRecibido.getX());
 		assertEquals(ejeYEsperado, puntoRecibido.getY());
+	}
+	
+	@Test
+	void verificacionCuandoUnPuntoNoEsMenorOIgualQueOtroPunto() {
+		assertFalse(this.punto2.esMenorOIgualQue(this.punto1));
+	}
+	
+	@Test
+	void verificacionCuandoUnPuntoEsMenorOIgualQueOtroPunto() {
+		assertTrue(this.punto1.esMenorOIgualQue(this.punto2));
 	}
 
 }

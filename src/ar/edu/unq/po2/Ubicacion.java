@@ -1,4 +1,6 @@
-package ar.edu.unq.po2.prueba;
+package ar.edu.unq.po2;
+
+import java.util.List;
 
 public class Ubicacion {
 	
@@ -13,7 +15,7 @@ public class Ubicacion {
 		return punto;
 	}
 
-	public void setPunto(Point punto) {
+	private void setPunto(Point punto) {
 		this.punto = punto;
 	}
 
@@ -27,6 +29,12 @@ public class Ubicacion {
 
 	public Point distanciaCon(Ubicacion ubicacion) {
 		return this.getPunto().restarCon(ubicacion.getPunto());
+	}
+
+	public List<Ubicacion> ubicacionesCercanasA(Point distanciaMaxima, List<Ubicacion> ubicacionesAComparar) {
+		return ubicacionesAComparar.stream()
+				                   .filter(u -> u.distanciaCon(this).esMenorOIgualQue(distanciaMaxima))
+				                   .toList();
 	}	
 
 }
