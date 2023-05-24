@@ -6,11 +6,11 @@ import java.util.List;
 public class ZonaDeCobertura {
 
 	private List<Muestra> muestras;
-	private Ubicacion epicentro;
-	private Ubicacion borde; //Hace referencia al borde de la zona de cobertura.
+	private Ubicacion2 epicentro;
+	private Ubicacion2 borde; //Hace referencia al borde de la zona de cobertura.
 	private String nombre;
 	
-	ZonaDeCobertura(Ubicacion epicentro, Ubicacion borde, String nombre) {
+	ZonaDeCobertura(Ubicacion2 epicentro, Ubicacion2 borde, String nombre) {
 		super();
 		this.setMuestras(new ArrayList<Muestra>());
 		this.setEpicentro(epicentro);
@@ -26,19 +26,19 @@ public class ZonaDeCobertura {
 		this.muestras = muestras;
 	}
 
-	public Ubicacion getEpicentro() {
+	public Ubicacion2 getEpicentro() {
 		return epicentro;
 	}
 
-	public void setEpicentro(Ubicacion epicentro) {
+	public void setEpicentro(Ubicacion2 epicentro) {
 		this.epicentro = epicentro;
 	}
 
-	public Ubicacion getBorde() {
+	public Ubicacion2 getBorde() {
 		return borde;
 	}
 
-	public void setBorde(Ubicacion borde) {
+	public void setBorde(Ubicacion2 borde) {
 		this.borde = borde;
 	}
 
@@ -50,7 +50,7 @@ public class ZonaDeCobertura {
 		this.nombre = nombre;
 	}
 
-	public int radio() {
+	public Double radio() {
 		return this.getEpicentro().distanciaCon(this.getBorde());
 	}
 
@@ -58,7 +58,7 @@ public class ZonaDeCobertura {
 		return this.diametro()*Math.PI;
 	}
 	
-	private int diametro() {
+	private Double diametro() {
 		return this.radio()*2;
 	}
 	

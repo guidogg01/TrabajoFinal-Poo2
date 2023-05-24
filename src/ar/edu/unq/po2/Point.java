@@ -41,6 +41,7 @@ public class Point {
 		return new Point(nuevoEjeX, nuevoEjeY);
 	}
 
+	//Este no se usaría mas.
 	public boolean esMenorOIgualQue(Point punto) {
 		return (this.getX() <= punto.getX()) && (this.getX() <= punto.getX());
 	}	
