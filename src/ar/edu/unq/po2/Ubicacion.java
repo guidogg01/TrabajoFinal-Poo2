@@ -3,38 +3,43 @@ package ar.edu.unq.po2;
 import java.util.List;
 
 public class Ubicacion {
+
+	private Double longitud;
+	private Double latitud;
 	
-	private Point punto;
-	
-	public Ubicacion(int longitud, int latitud) {
+	public Ubicacion(Double longitud, Double latitud) {
 		super();
-		this.setPunto(new Point(longitud, latitud));
+		this.setLongitud(longitud);
+		this.setLatitud(latitud);
 	}
 
-	public Point getPunto() {
-		return punto;
+	public Double getLongitud() {
+		return longitud;
 	}
 
-	private void setPunto(Point punto) {
-		this.punto = punto;
+	public void setLongitud(Double longitud) {
+		this.longitud = longitud;
 	}
 
-	public int getLongitud() {
-		return this.getPunto().getX();
+	public Double getLatitud() {
+		return latitud;
+	}
+
+	public void setLatitud(Double latitud) {
+		this.latitud = latitud;
 	}
 	
-	public int getLatitud() {
-		return this.getPunto().getY();
+	public Double distanciaCon(Ubicacion ubicacion) {
+		Double distanciaLongitud = Math.abs(this.longitud - ubicacion.getLongitud());
+		Double distanciaLatitud  = Math.abs(this.latitud - ubicacion.getLatitud());
+		return distanciaLongitud + distanciaLatitud;
 	}
 
-	public Point distanciaCon(Ubicacion ubicacion) {
-		return this.getPunto().restarCon(ubicacion.getPunto());
-	}
-
-	public List<Ubicacion> ubicacionesCercanasA(Point distanciaMaxima, List<Ubicacion> ubicacionesAComparar) {
+	//Que la distanciaMaxima sea un Double que representa una cantidad de kilómetros...
+	public List<Ubicacion> ubicacionesCercanasA(Double distanciaMaxima, List<Ubicacion> ubicacionesAComparar) {
 		return ubicacionesAComparar.stream()
-				                   .filter(u -> u.distanciaCon(this).esMenorOIgualQue(distanciaMaxima))
+				                   .filter(u -> u.distanciaCon(this) <= distanciaMaxima)
 				                   .toList();
-	}	
-
+	}
+	
 }

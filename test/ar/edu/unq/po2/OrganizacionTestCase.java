@@ -25,7 +25,7 @@ class OrganizacionTestCase {
 	void verificacionDeInicializacionDeUnaOrganizacion() {
 		
 		//Mockeando la ubicación.
-		when(ubicacion.getLatitud()).thenReturn(4);
+		when(ubicacion.getLatitud()).thenReturn(4d);
 		
 		ONG tipoDeOrganizacionEsperada = ONG.ASISTENCIA;
 		int cantEsperadaDeTrabajadores = 10;
