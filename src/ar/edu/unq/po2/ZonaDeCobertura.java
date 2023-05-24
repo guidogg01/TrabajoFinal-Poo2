@@ -61,5 +61,23 @@ public class ZonaDeCobertura {
 	private Double diametro() {
 		return this.radio()*2;
 	}
+
+	public List<ZonaDeCobertura> zonasQueSolapan(List<ZonaDeCobertura> zonasAComparar) {
+		// Dos ZonaDeCobetura se solapan cuando el radio de zona1 es mayor a la distancia desde el epicentro de zona1, 
+		// hasta el borde de zona2.
+		return zonasAComparar.stream()
+				             .filter(z -> this.radio() > this.getEpicentro().distanciaCon(z.getBorde()))
+				             .toList();
+	}
+
+	public void agregarMuestra(Muestra muestra) {
+		if(this.estaDentroDeLaZona(muestra)) {
+			this.getMuestras().add(muestra); 
+		}
+	}        
+	
+	private boolean estaDentroDeLaZona(Muestra muestra) {
+		return this.radio() > this.getEpicentro().distanciaCon(muestra.getUbicacion());
+	} 
 	
 }

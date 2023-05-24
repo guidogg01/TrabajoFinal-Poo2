@@ -3,23 +3,50 @@ package ar.edu.unq.po2;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ZonaDeCoberturaTestCase {
 
-	private ZonaDeCobertura zonaDeCobertura;
+	private ZonaDeCobertura zonaQuilmes;
+	private Ubicacion ubicacionDeEpicentroQuilmes;
+	private Ubicacion ubicacionDeBordeQuilmes;
 	
-	private Ubicacion ubicacionDeEpicentro;
-	private Ubicacion ubicacionDeBorde;
+	private ZonaDeCobertura zonaBernal;
+	private Ubicacion ubicacionDeEpicentroBernal;
+	private Ubicacion ubicacionDeBordeBernal;
+	
+	private ZonaDeCobertura zonaWilde;
+	private Ubicacion ubicacionDeEpicentroWilde;
+	private Ubicacion ubicacionDeBordeWilde;
+	
+	private Muestra muestra;
+	private Ubicacion ubicacionDeMuestra;
 	
 	@BeforeEach
 	void setUp() {
 		
-		ubicacionDeEpicentro = mock(Ubicacion.class);
-		ubicacionDeBorde     = mock(Ubicacion.class);
+		muestra     = mock(Muestra.class);
+		ubicacionDeMuestra = mock(Ubicacion.class);
 		
-		zonaDeCobertura = new ZonaDeCobertura(ubicacionDeEpicentro, ubicacionDeBorde, "Zona Quilmes");
+		ubicacionDeEpicentroQuilmes = mock(Ubicacion.class);
+		ubicacionDeBordeQuilmes     = mock(Ubicacion.class);
+		
+		ubicacionDeEpicentroBernal  = mock(Ubicacion.class);
+		ubicacionDeBordeBernal      = mock(Ubicacion.class);
+		
+		ubicacionDeEpicentroWilde   = mock(Ubicacion.class);
+		ubicacionDeEpicentroWilde   = mock(Ubicacion.class);
+		
+		zonaQuilmes = new ZonaDeCobertura(ubicacionDeEpicentroQuilmes, ubicacionDeBordeQuilmes, "Zona Quilmes");
+		
+		zonaBernal  = new ZonaDeCobertura(ubicacionDeEpicentroBernal, ubicacionDeBordeBernal, "Zona Bernal");
+		
+		zonaWilde   = new ZonaDeCobertura(ubicacionDeEpicentroWilde, ubicacionDeBordeWilde, "Zona Wilde");
+		
 		
 	}
 	
@@ -31,32 +58,82 @@ class ZonaDeCoberturaTestCase {
 		String nombreEsperado = "Zona Quilmes";
 		
 		//Mockeando las ubicaciones.
-		when(ubicacionDeEpicentro.getLongitud()).thenReturn(2d);
-		when(ubicacionDeBorde.getLongitud()).thenReturn(6d);
+		when(ubicacionDeEpicentroQuilmes.getLongitud()).thenReturn(2d);
+		when(ubicacionDeBordeQuilmes.getLongitud()).thenReturn(6d);
 		
 				
-		assertTrue(this.zonaDeCobertura.getMuestras().isEmpty());
-		assertEquals(longitudEsperadaDeEpicentro, this.zonaDeCobertura.getEpicentro().getLongitud());
-		assertEquals(longitudEsperadaDeBorde, this.zonaDeCobertura.getBorde().getLongitud());
-		assertEquals(nombreEsperado, this.zonaDeCobertura.getNombre());
+		assertTrue(this.zonaQuilmes.getMuestras().isEmpty());
+		assertEquals(longitudEsperadaDeEpicentro, this.zonaQuilmes.getEpicentro().getLongitud());
+		assertEquals(longitudEsperadaDeBorde, this.zonaQuilmes.getBorde().getLongitud());
+		assertEquals(nombreEsperado, this.zonaQuilmes.getNombre());
 	}
 	
 	@Test
 	void verificacionDeRadioDeUnaZonaDeCobertura() {
 		//Mockeando las ubicaciones.
-		when(ubicacionDeEpicentro.distanciaCon(ubicacionDeBorde)).thenReturn(7d);
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d);
 		
-		assertEquals(7, this.zonaDeCobertura.radio());
+		assertEquals(7, this.zonaQuilmes.radio());
 	}
 	
 	@Test
 	void verificacionDeDistanciaDeUnaZonaDeCobertura() {
 		// Setup
 		double distanciaEsperada = 14*Math.PI; //Sería el diametro * PI.
-		//Mockeando las ubicaciones.
-		when(ubicacionDeEpicentro.distanciaCon(ubicacionDeBorde)).thenReturn(7d);
 		
-		assertEquals(distanciaEsperada, this.zonaDeCobertura.distancia());
+		//Mockeando las ubicaciones.
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d);
+		
+		assertEquals(distanciaEsperada, this.zonaQuilmes.distancia());
+	}
+	
+	@Test
+	void verificacionDeZonasDeCoberturaQueSeSolapan() {
+		//Setup
+		List<ZonaDeCobertura> zonasAComparar = Arrays.asList(this.zonaBernal, this.zonaWilde);
+		
+		List<ZonaDeCobertura> zonasEsperadas = Arrays.asList(this.zonaBernal);
+		
+		//Mockeando cada una de las ubicaciones de cada ZonaDeCobertura.
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d); // el radio de ZonaQuilmes
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeBernal)).thenReturn(4d);  // distancia entre el epicentro de ZonaQuilmes y el borde de ZonaBernal.
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeWilde)).thenReturn(11d);  // distancia entre el epicentro de ZonaQuilmes y el borde de ZonaWilde.
+		
+		assertEquals(zonasEsperadas, this.zonaQuilmes.zonasQueSolapan(zonasAComparar));
+	}
+	
+	@Test
+	void verificacionDeAgregadoValidoDeUnaMuestraAUnaZonaDeCobertura() {
+		//Mockeando la ubicacion de la muestra
+		when(ubicacionDeMuestra.getLatitud()).thenReturn(1d);
+		when(ubicacionDeMuestra.getLongitud()).thenReturn(3d);
+		//Mockeando la muestra
+		when(muestra.getUbicacion()).thenReturn(ubicacionDeMuestra);
+		//Mockeando las ubicaciones de zonaQuilmes.
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d); // el radio de ZonaQuilmes
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeMuestra)).thenReturn(4d);
+		
+		//Excersice
+		this.zonaQuilmes.agregarMuestra(this.muestra);
+		
+		assertFalse(this.zonaQuilmes.getMuestras().isEmpty());
+	}
+	
+	@Test
+	void verificacionDeAgregadoNoValidoDeUnaMuestraAUnaZonaDeCobertura() {
+		//Mockeando la ubicacion de la muestra
+		when(ubicacionDeMuestra.getLatitud()).thenReturn(1d);
+		when(ubicacionDeMuestra.getLongitud()).thenReturn(3d);
+		//Mockeando la muestra
+		when(muestra.getUbicacion()).thenReturn(ubicacionDeMuestra);
+		//Mockeando las ubicaciones de zonaQuilmes.
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d); // el radio de ZonaQuilmes
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeMuestra)).thenReturn(9d);
+		
+		//Excersice
+		this.zonaQuilmes.agregarMuestra(this.muestra);
+		
+		assertTrue(this.zonaQuilmes.getMuestras().isEmpty());
 	}
 
 }
