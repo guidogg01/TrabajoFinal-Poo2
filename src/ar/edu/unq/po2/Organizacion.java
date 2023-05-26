@@ -1,16 +1,18 @@
 package ar.edu.unq.po2;
 
-public class Organizacion {
+public class Organizacion implements IZonaDeCoberturaListeners {
 
 	private ONG tipoDeONG;
 	private int cantidadDeTrabajadores;
 	private Ubicacion ubicacion;
+	private ZonaDeCobertura miZonaDeCobertura;
 	
-	Organizacion(ONG tipoDeONG, int cantidadDeTrabajadores, Ubicacion ubicacion) {
+	Organizacion(ONG tipoDeONG, int cantidadDeTrabajadores, Ubicacion ubicacion, ZonaDeCobertura zonaDeCobertura) {
 		super();
 		this.setTipoDeONG(tipoDeONG);
 		this.setCantidadDeTrabajadores(cantidadDeTrabajadores);
 		this.setUbicacion(ubicacion);
+		this.setMiZonaDeCobertura(zonaDeCobertura);
 	}
 
 	public ONG getTipoDeONG() {
@@ -35,6 +37,26 @@ public class Organizacion {
 
 	public void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
+	}
+
+	public ZonaDeCobertura getMiZonaDeCobertura() {
+		return miZonaDeCobertura;
+	}
+
+	public void setMiZonaDeCobertura(ZonaDeCobertura miZonaDeCobertura) {
+		this.miZonaDeCobertura = miZonaDeCobertura;
+		this.getMiZonaDeCobertura().subscribirObserver(this);
+	}
+
+	@Override
+	public void nuevaMuestraCargada(ZonaDeCobertura zonaDeCobertura, Muestra muestra) {
+		// funcionalidad externa, nuevoEvento(...)
+	}
+ 
+	@Override
+	public void nuevaValidacionDeMuestra(ZonaDeCobertura zonaDeCobertura, Muestra muestra) {
+		// funcionalidad externa, nuevoEvento(...)
+		
 	}	
 	
 }

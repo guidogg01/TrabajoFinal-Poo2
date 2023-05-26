@@ -26,6 +26,8 @@ class ZonaDeCoberturaTestCase {
 	private Muestra muestra;
 	private Ubicacion ubicacionDeMuestra;
 	
+	private Organizacion organizacionObserver;
+	
 	@BeforeEach
 	void setUp() {
 		
@@ -46,6 +48,8 @@ class ZonaDeCoberturaTestCase {
 		zonaBernal  = new ZonaDeCobertura(ubicacionDeEpicentroBernal, ubicacionDeBordeBernal, "Zona Bernal");
 		
 		zonaWilde   = new ZonaDeCobertura(ubicacionDeEpicentroWilde, ubicacionDeBordeWilde, "Zona Wilde");
+		
+		organizacionObserver = mock(Organizacion.class);
 		
 		
 	}
@@ -107,8 +111,10 @@ class ZonaDeCoberturaTestCase {
 		//Mockeando la ubicacion de la muestra
 		when(ubicacionDeMuestra.getLatitud()).thenReturn(1d);
 		when(ubicacionDeMuestra.getLongitud()).thenReturn(3d);
+		
 		//Mockeando la muestra
 		when(muestra.getUbicacion()).thenReturn(ubicacionDeMuestra);
+		
 		//Mockeando las ubicaciones de zonaQuilmes.
 		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d); // el radio de ZonaQuilmes
 		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeMuestra)).thenReturn(4d);
@@ -124,8 +130,10 @@ class ZonaDeCoberturaTestCase {
 		//Mockeando la ubicacion de la muestra
 		when(ubicacionDeMuestra.getLatitud()).thenReturn(1d);
 		when(ubicacionDeMuestra.getLongitud()).thenReturn(3d);
+		
 		//Mockeando la muestra
 		when(muestra.getUbicacion()).thenReturn(ubicacionDeMuestra);
+		
 		//Mockeando las ubicaciones de zonaQuilmes.
 		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d); // el radio de ZonaQuilmes
 		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeMuestra)).thenReturn(9d);
@@ -134,6 +142,26 @@ class ZonaDeCoberturaTestCase {
 		this.zonaQuilmes.agregarMuestra(this.muestra);
 		
 		assertTrue(this.zonaQuilmes.getMuestras().isEmpty());
+	}
+	
+	@Test
+	void verificacionCuandoUnaZonaDeCoberturaAgregaUnaMuestraLeNotificaASusListeners() {
+		//Mockeando la ubicacion de la muestra
+		when(ubicacionDeMuestra.getLatitud()).thenReturn(1d);
+		when(ubicacionDeMuestra.getLongitud()).thenReturn(3d);
+		
+		//Mockeando la muestra
+		when(muestra.getUbicacion()).thenReturn(ubicacionDeMuestra);
+		
+		//Mockeando las ubicaciones de zonaQuilmes.
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d); // el radio de ZonaQuilmes
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeMuestra)).thenReturn(4d);
+		
+		//Excersice
+		this.zonaQuilmes.subscribirObserver(this.organizacionObserver);
+		this.zonaQuilmes.agregarMuestra(this.muestra);
+		
+		verify(this.organizacionObserver, times(1)).nuevaMuestraCargada(this.zonaQuilmes, this.muestra);
 	}
 
 }

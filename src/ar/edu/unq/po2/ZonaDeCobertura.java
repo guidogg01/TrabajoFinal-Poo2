@@ -3,7 +3,7 @@ package ar.edu.unq.po2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZonaDeCobertura {
+public class ZonaDeCobertura extends Subject {
 
 	private List<Muestra> muestras;
 	private Ubicacion epicentro;
@@ -49,6 +49,7 @@ public class ZonaDeCobertura {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
 
 	public Double radio() {
 		return this.getEpicentro().distanciaCon(this.getBorde());
@@ -70,14 +71,23 @@ public class ZonaDeCobertura {
 				             .toList();
 	}
 
-	public void agregarMuestra(Muestra muestra) {
-		if(this.estaDentroDeLaZona(muestra)) {
-			this.getMuestras().add(muestra); 
-		}
-	}        
 	
 	private boolean estaDentroDeLaZona(Muestra muestra) {
+		// Una Muestra esta dentro de la una zonaDeCobertura, si y solo si el radio de la zonaDeCobertura es mayor a la 
+		// distancia desde el epicentro de la zonaDeCobertura hasta la ubicacion de la Muestra.
 		return this.radio() > this.getEpicentro().distanciaCon(muestra.getUbicacion());
 	} 
 	
+	public void agregarMuestra(Muestra muestra) {
+		if(this.estaDentroDeLaZona(muestra)) {
+			this.getMuestras().add(muestra);
+			this.notificarCargaDeMuestra(muestra);
+		}
+	}
+	
+	private void notificarCargaDeMuestra(Muestra muestra) {
+		this.getObservers()
+		    .stream()
+		    .forEach(o -> o.nuevaMuestraCargada(this, muestra));
+	}
 }
