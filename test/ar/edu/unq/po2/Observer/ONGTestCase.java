@@ -1,8 +1,10 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.Observer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import ar.edu.unq.po2.Observer.ONG;
 
 class ONGTestCase {
 	

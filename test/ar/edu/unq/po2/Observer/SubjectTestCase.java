@@ -1,10 +1,13 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.Observer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import ar.edu.unq.po2.Observer.IZonaDeCoberturaListeners;
+import ar.edu.unq.po2.Observer.Subject;
 
 class SubjectTestCase {
 	
@@ -36,6 +39,9 @@ class SubjectTestCase {
 	
 	@Test
 	void verificacionCuandoUnSubjectDesubscribeAUnObserver() {
+		//SetUp
+		this.subject.subscribirObserver(this.iZona);
+		
 		//Exercise
 		this.subject.desubscribirObserver(this.iZona);
 		

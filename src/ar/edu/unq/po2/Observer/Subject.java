@@ -1,4 +1,4 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.Observer;
 
 import java.util.ArrayList;
 import java.util.List;

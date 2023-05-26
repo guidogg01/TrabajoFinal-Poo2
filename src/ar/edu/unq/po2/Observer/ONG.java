@@ -1,4 +1,4 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.Observer;
 
 public enum ONG {
 

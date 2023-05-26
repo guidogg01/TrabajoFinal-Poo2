@@ -1,4 +1,7 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.Observer;
+
+import ar.edu.unq.po2.Muestra;
+import ar.edu.unq.po2.Ubicacion;
 
 public class Organizacion implements IZonaDeCoberturaListeners {
 

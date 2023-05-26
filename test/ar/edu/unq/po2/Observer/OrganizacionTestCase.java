@@ -1,10 +1,15 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.Observer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import ar.edu.unq.po2.Ubicacion;
+import ar.edu.unq.po2.Observer.ONG;
+import ar.edu.unq.po2.Observer.Organizacion;
+import ar.edu.unq.po2.Observer.ZonaDeCobertura;
 
 class OrganizacionTestCase {
 
