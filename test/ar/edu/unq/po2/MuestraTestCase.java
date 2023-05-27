@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.time.LocalDate;
 
 class MuestraTestCase {
 
@@ -25,8 +26,8 @@ class MuestraTestCase {
 
 		opinion   = mock(Opinion.class);
 		
-		muestra1   = new Muestra(Vinchuca.SORDIDA,   10, ubicacion1);
-		muestra2   = new Muestra(Vinchuca.GUASAYANA, 5 , ubicacion2);
+		muestra1   = new Muestra(Vinchuca.SORDIDA,   10, ubicacion1, LocalDate.now());
+		muestra2   = new Muestra(Vinchuca.GUASAYANA, 5 , ubicacion2, LocalDate.now());
 	}
 	
 	@Test
@@ -39,10 +40,12 @@ class MuestraTestCase {
 		int idDeParticipanteEsperado = 10;
 		Double latitudEsperadaDeLaUbicacion = 4d;
 		
+		
 		assertEquals(tipoDeVinchucaFotografiadaEsperado, this.muestra1.getTipoDeVinchucaFotografiada());
 		assertEquals(fotoEsperada, this.muestra1.getFoto());
 		assertEquals(idDeParticipanteEsperado,this.muestra1.getIdDeParticipante());
 		assertEquals(latitudEsperadaDeLaUbicacion, this.muestra1.getUbicacion().getLatitud());
+		assertEquals(LocalDate.now(), this.muestra1.getFechaDeCreacion());
 		assertTrue(this.muestra1.getOpiniones().isEmpty());
 	}
 	
@@ -56,13 +59,26 @@ class MuestraTestCase {
 	
 	@Test
 	void verificacionDeDistanciaDeDosMuestras() {
-		//setUp
+		//Setup
 		Double distanciaEsperada = 4d;
 		
 		//Moceando la ubicacion de las muestras
 		when(ubicacion1.distanciaCon(ubicacion2)).thenReturn(4d);
 		
 		assertEquals(distanciaEsperada, this.muestra1.distanciaConMuestra(this.muestra2));		
+	}
+	
+	@Test
+	void verificacionDeFechaDeLaUltimaVotacionQueRecibioUnaMuestra() {
+		//Mockeando la opinion.
+		when(this.opinion.getFechaDeCreacion()).thenReturn(LocalDate.of(2023, 12, 29));
+		
+		//Setup
+		this.muestra1.agregarOpinion(this.opinion);
+		LocalDate fechaEsperada = LocalDate.of(2023, 12, 29);
+		
+		assertEquals(fechaEsperada, this.muestra1.fechaDeUltimaVotacion());
+		verify(this.opinion, times(1)).getFechaDeCreacion();
 	}
 
 }
