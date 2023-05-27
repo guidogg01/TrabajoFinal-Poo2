@@ -9,13 +9,15 @@ public class Organizacion implements IZonaDeCoberturaListeners {
 	private int cantidadDeTrabajadores;
 	private Ubicacion ubicacion;
 	private ZonaDeCobertura miZonaDeCobertura;
+	private FuncionalidadExterna funcionalidadExterna;
 	
-	Organizacion(ONG tipoDeONG, int cantidadDeTrabajadores, Ubicacion ubicacion, ZonaDeCobertura zonaDeCobertura) {
+	Organizacion(ONG tipoDeONG, int cantidadDeTrabajadores, Ubicacion ubicacion, ZonaDeCobertura zonaDeCobertura, FuncionalidadExterna funcionalidadExterna) {
 		super();
 		this.setTipoDeONG(tipoDeONG);
 		this.setCantidadDeTrabajadores(cantidadDeTrabajadores);
 		this.setUbicacion(ubicacion);
 		this.setMiZonaDeCobertura(zonaDeCobertura);
+		this.setFuncionalidadExterna(funcionalidadExterna);
 	}
 
 	public ONG getTipoDeONG() {
@@ -51,15 +53,22 @@ public class Organizacion implements IZonaDeCoberturaListeners {
 		this.getMiZonaDeCobertura().subscribirObserver(this);
 	}
 
+	public FuncionalidadExterna getFuncionalidadExterna() {
+		return funcionalidadExterna;
+	}
+
+	public void setFuncionalidadExterna(FuncionalidadExterna funcionalidadExterna) {
+		this.funcionalidadExterna = funcionalidadExterna;
+	}
+
 	@Override
 	public void nuevaMuestraCargada(ZonaDeCobertura zonaDeCobertura, Muestra muestra) {
-		// funcionalidad externa, nuevoEvento(...)
+		this.getFuncionalidadExterna().nuevoEvento(this, zonaDeCobertura, muestra);
 	}
  
 	@Override
 	public void nuevaValidacionDeMuestra(ZonaDeCobertura zonaDeCobertura, Muestra muestra) {
-		// funcionalidad externa, nuevoEvento(...)
-		
+		// this.getFuncionalidadExterna().nuevoEvento(this. zonaDeCobertura, muestra);
 	}	
 	
 }
