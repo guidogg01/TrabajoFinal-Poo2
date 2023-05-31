@@ -27,7 +27,7 @@ public class Muestra {
 		return tipoDeVinchucaFotografiada;
 	}
 
-	public void setTipoDeVinchucaFotografiada(Vinchuca tipoDeVinchucaFotografiada) {
+	private void setTipoDeVinchucaFotografiada(Vinchuca tipoDeVinchucaFotografiada) {
 		this.tipoDeVinchucaFotografiada = tipoDeVinchucaFotografiada;
 	}
 
@@ -35,7 +35,7 @@ public class Muestra {
 		return foto;
 	}
 
-	public void setFoto(String foto) {
+	private void setFoto(String foto) {
 		this.foto = foto;
 	}
 
@@ -43,7 +43,7 @@ public class Muestra {
 		return idDeParticipante;
 	}
 
-	public void setIdDeParticipante(int idDeParticipante) {
+	private void setIdDeParticipante(int idDeParticipante) {
 		this.idDeParticipante = idDeParticipante;
 	}
 
@@ -51,7 +51,7 @@ public class Muestra {
 		return ubicacion;
 	}
 	
-	public void setUbicacion(Ubicacion ubicacion) {
+	private void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
 	}
 
@@ -59,7 +59,7 @@ public class Muestra {
 		return opiniones;
 	}
 
-	public void setOpiniones(List<Opinion> opiniones) {
+	private void setOpiniones(List<Opinion> opiniones) {
 		this.opiniones = opiniones;
 	}
 
@@ -67,7 +67,7 @@ public class Muestra {
 		return fechaDeCreacion;
 	}
 
-	public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
+	private void setFechaDeCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
 	}
 
@@ -81,6 +81,11 @@ public class Muestra {
 
 	public LocalDate fechaDeUltimaVotacion() {
 		return this.getOpiniones().get(this.getOpiniones().size() - 1).getFechaDeCreacion();
+	}
+
+	public boolean esVerificada() {
+		// retorna true en caso de que 2 expertos la hayan validado, en caso contrario retorna false, lo cual indica que es votada.
+		return true; // ESTA HARDCODEADO HACER TDD Y DEMÁS.
 	}
 	
 }

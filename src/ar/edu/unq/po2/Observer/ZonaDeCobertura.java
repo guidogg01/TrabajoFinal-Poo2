@@ -25,7 +25,7 @@ public class ZonaDeCobertura extends Subject {
 		return muestras;
 	}
 
-	public void setMuestras(List<Muestra> muestras) {
+	private void setMuestras(List<Muestra> muestras) {
 		this.muestras = muestras;
 	}
 
@@ -33,7 +33,7 @@ public class ZonaDeCobertura extends Subject {
 		return epicentro;
 	}
 
-	public void setEpicentro(Ubicacion epicentro) {
+	private void setEpicentro(Ubicacion epicentro) {
 		this.epicentro = epicentro;
 	}
 
@@ -41,7 +41,7 @@ public class ZonaDeCobertura extends Subject {
 		return borde;
 	}
 
-	public void setBorde(Ubicacion borde) {
+	private void setBorde(Ubicacion borde) {
 		this.borde = borde;
 	}
 
@@ -49,7 +49,7 @@ public class ZonaDeCobertura extends Subject {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
+	private void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 	

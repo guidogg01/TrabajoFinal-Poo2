@@ -17,7 +17,7 @@ public class Pagina {
 		return muestras;
 	}
 
-	public void setMuestras(List<Muestra> muestras) {
+	private void setMuestras(List<Muestra> muestras) {
 		this.muestras = muestras;
 	}
 

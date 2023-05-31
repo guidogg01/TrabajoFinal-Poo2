@@ -16,7 +16,7 @@ public class Subject {
 		return observers;
 	}
 
-	public void setObservers(List<IZonaDeCoberturaListeners> observers) {
+	private void setObservers(List<IZonaDeCoberturaListeners> observers) {
 		this.observers = observers;
 	}
 	

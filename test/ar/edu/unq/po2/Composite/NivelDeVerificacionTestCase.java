@@ -3,7 +3,6 @@ package ar.edu.unq.po2.Composite;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,10 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.Muestra;
 
-class FechaUltimaVotacionTestCase {
-
-	private FechaUltimaVotacion filtro;
+class NivelDeVerificacionTestCase {
 	
+	private NivelDeVerificacion filtro;
+
 	private Muestra muestra1;
 	private Muestra muestra2;
 	private Muestra muestra3;
@@ -23,7 +22,7 @@ class FechaUltimaVotacionTestCase {
 	@BeforeEach
 	void setUp() {
 		
-		filtro = new FechaUltimaVotacion(LocalDate.of(2023, 8, 17));
+		filtro = new NivelDeVerificacion(true);
 		
 		muestra1 = mock(Muestra.class);
 		muestra2 = mock(Muestra.class);
@@ -32,20 +31,17 @@ class FechaUltimaVotacionTestCase {
 	}
 
 	@Test
-	void verificacionDeInicializacionDeUnFiltroPorFechaDeCreacion() {
-		//Setup
-		LocalDate fechaDeCreacionEsperada = LocalDate.of(2023, 8, 17);
-		
-		assertEquals(fechaDeCreacionEsperada, this.filtro.getFechaAFiltrar());
+	void verificacionDeInicializacionDeUnFiltroPorFechaDeCreacion() {		
+		assertTrue(this.filtro.getNivelDeVerificacionAFiltrar());
 	}
 
 	
 	@Test
 	void verificacionDeFiltradoDeUnFiltroPorFechaDeCreacion() {
 		//Mockeando las muestras
-		when(muestra1.fechaDeUltimaVotacion()).thenReturn(LocalDate.of(2022, 2, 19));
-		when(muestra2.fechaDeUltimaVotacion()).thenReturn(LocalDate.of(2023, 8, 17)); 
-		when(muestra3.fechaDeUltimaVotacion()).thenReturn(LocalDate.of(2023, 10, 16));
+		when(muestra1.esVerificada()).thenReturn(false);
+		when(muestra2.esVerificada()).thenReturn(true); 
+		when(muestra3.esVerificada()).thenReturn(false);
 
 		//Setup
 		List<Muestra> muestrasAFiltrar = Arrays.asList(this.muestra1, this.muestra2, this.muestra3);
@@ -53,5 +49,5 @@ class FechaUltimaVotacionTestCase {
 		List<Muestra> muestrasFiltradasEsperadas = Arrays.asList(this.muestra2);
 		
 		assertEquals(muestrasFiltradasEsperadas, this.filtro.filtrar(muestrasAFiltrar));
-	}
+	} 
 }

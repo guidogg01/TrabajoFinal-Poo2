@@ -18,7 +18,7 @@ public class FechaUltimaVotacion implements IFiltro {
 		return fechaAFiltrar;
 	}
 
-	public void setFechaAFiltrar(LocalDate fechaAFiltrar) {
+	private void setFechaAFiltrar(LocalDate fechaAFiltrar) {
 		this.fechaAFiltrar = fechaAFiltrar;
 	}
 

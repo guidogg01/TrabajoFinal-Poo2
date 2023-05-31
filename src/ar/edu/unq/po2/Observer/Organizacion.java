@@ -24,7 +24,7 @@ public class Organizacion implements IZonaDeCoberturaListeners {
 		return tipoDeONG;
 	}
 
-	public void setTipoDeONG(ONG tipoDeONG) {
+	private void setTipoDeONG(ONG tipoDeONG) {
 		this.tipoDeONG = tipoDeONG;
 	}
 
@@ -32,7 +32,7 @@ public class Organizacion implements IZonaDeCoberturaListeners {
 		return cantidadDeTrabajadores;
 	}
 
-	public void setCantidadDeTrabajadores(int cantidadDeTrabajadores) {
+	private void setCantidadDeTrabajadores(int cantidadDeTrabajadores) {
 		this.cantidadDeTrabajadores = cantidadDeTrabajadores;
 	}
 
@@ -40,7 +40,7 @@ public class Organizacion implements IZonaDeCoberturaListeners {
 		return ubicacion;
 	}
 
-	public void setUbicacion(Ubicacion ubicacion) {
+	private void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
 	}
 
@@ -48,7 +48,7 @@ public class Organizacion implements IZonaDeCoberturaListeners {
 		return miZonaDeCobertura;
 	}
 
-	public void setMiZonaDeCobertura(ZonaDeCobertura miZonaDeCobertura) {
+	private void setMiZonaDeCobertura(ZonaDeCobertura miZonaDeCobertura) {
 		this.miZonaDeCobertura = miZonaDeCobertura;
 		this.getMiZonaDeCobertura().subscribirObserver(this);
 	}

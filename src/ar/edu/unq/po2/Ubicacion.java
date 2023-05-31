@@ -17,7 +17,7 @@ public class Ubicacion {
 		return longitud;
 	}
 
-	public void setLongitud(Double longitud) {
+	private void setLongitud(Double longitud) {
 		this.longitud = longitud;
 	}
 
@@ -25,7 +25,7 @@ public class Ubicacion {
 		return latitud;
 	}
 
-	public void setLatitud(Double latitud) {
+	private void setLatitud(Double latitud) {
 		this.latitud = latitud;
 	}
 	
