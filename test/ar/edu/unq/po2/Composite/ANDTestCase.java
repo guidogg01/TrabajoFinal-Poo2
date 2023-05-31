@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.Muestra;
 
-class ORTestCase {
+class ANDTestCase {
 	
-	private OR or;
-	private OR or1;
+	private AND and;
+	private AND and1;
 	
 	private FechaDeCreacion filtroFechaDeCreacion;
 	private FechaUltimaVotacion filtroFechaUltimaVotacion;
@@ -40,58 +40,57 @@ class ORTestCase {
 		filtroFechaUltimaVotacion = mock(FechaUltimaVotacion.class);
 		filtroNivelDeVerificacion = mock(NivelDeVerificacion.class);
 		
-		or  = new OR(filtroFechaDeCreacion, filtroFechaUltimaVotacion);
-		or1 = new OR(filtroNivelDeVerificacion, or);
+		and  = new AND(filtroFechaDeCreacion, filtroFechaUltimaVotacion);
+		and1 = new AND(filtroNivelDeVerificacion, and);
 		
 	}
 
 	@Test
-	void verificacionDeInicializacionDeUnaBusquedaDeTipoOR() {
-		assertEquals(filtroFechaDeCreacion, this.or.getPrimerBusqueda());
-		assertEquals(filtroFechaUltimaVotacion, this.or.getSegundaBusqueda());
+	void verificacionDeInicializacionDeUnaBusquedaDeTipoAND() {
+		assertEquals(filtroFechaDeCreacion, this.and.getPrimerBusqueda());
+		assertEquals(filtroFechaUltimaVotacion, this.and.getSegundaBusqueda());
 	}
 	
 	@Test
-	void verificacionDeBusquedaDeTipoORSoloConLeafs() {
+	void verificacionDeBusquedaDeTipoANDSoloConLeafs() {
 		//Setup
 		List<Muestra> muestrasAFiltrar = Arrays.asList(this.muestra1, this.muestra2, this.muestra3);
 			
-		List<Muestra> muestrasFiltradasEsperadasParaBusqueda1 = Arrays.asList(this.muestra2);
-		List<Muestra> muestrasFiltradasEsperadasParaBusqueda2 = Arrays.asList(this.muestra3);
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda1 = Arrays.asList(this.muestra2, this.muestra3);
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda2 = Arrays.asList(this.muestra3, this.muestra4);
 		
-		List<Muestra> muestrasFiltradasEsperadas = Arrays.asList(this.muestra2, this.muestra3);
+		List<Muestra> muestrasFiltradasEsperadas = Arrays.asList(this.muestra3);
 		
 		//Mockeando las busquedas
 		when(filtroFechaDeCreacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda1);
 		when(filtroFechaUltimaVotacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda2);   
 		
-		assertEquals(muestrasFiltradasEsperadas, this.or.filtrar(muestrasAFiltrar));
+		assertEquals(muestrasFiltradasEsperadas, this.and.filtrar(muestrasAFiltrar));
 		
 		verify(this.filtroFechaDeCreacion, times(1)).filtrar(muestrasAFiltrar);
 		verify(this.filtroFechaUltimaVotacion, times(1)).filtrar(muestrasAFiltrar);
 	} 
 	
 	@Test
-	void verificacionDeBusquedaDeTipoORConComposite() {
+	void verificacionDeBusquedaDeTipoANDConComposite() {
 		//Setup
 		List<Muestra> muestrasAFiltrar = Arrays.asList(this.muestra1, this.muestra2, this.muestra3, this.muestra4, this.muestra5);
 			
-		List<Muestra> muestrasFiltradasEsperadasParaBusqueda1 = Arrays.asList(this.muestra2);
-		List<Muestra> muestrasFiltradasEsperadasParaBusqueda2 = Arrays.asList(this.muestra3);
-		List<Muestra> muestrasFiltradasEsperadasParaBusqueda3 = Arrays.asList(this.muestra4);
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda1 = Arrays.asList(this.muestra5, this.muestra2, this.muestra3, this.muestra4);
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda2 = Arrays.asList(this.muestra5, this.muestra4);
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda3 = Arrays.asList(this.muestra4, this.muestra3, this.muestra5);
 		
-		List<Muestra> muestrasFiltradasEsperadas = Arrays.asList(this.muestra4, this.muestra2, this.muestra3);
+		List<Muestra> muestrasFiltradasEsperadas = Arrays.asList(this.muestra4, this.muestra5);
 		
 		//Mockeando las busquedas
 		when(filtroFechaDeCreacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda1);
 		when(filtroFechaUltimaVotacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda2);
 		when(filtroNivelDeVerificacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda3);
 		
-		assertEquals(muestrasFiltradasEsperadas, this.or1.filtrar(muestrasAFiltrar));
+		assertEquals(muestrasFiltradasEsperadas, this.and1.filtrar(muestrasAFiltrar));
 		
 		verify(this.filtroFechaDeCreacion, times(1)).filtrar(muestrasAFiltrar);
 		verify(this.filtroFechaUltimaVotacion, times(1)).filtrar(muestrasAFiltrar);
 		verify(this.filtroNivelDeVerificacion, times(1)).filtrar(muestrasAFiltrar);
 	}
-
 }
