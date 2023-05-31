@@ -34,7 +34,7 @@ public class AND implements Busqueda {
 
 	@Override
 	public List<Muestra> filtrar(List<Muestra> muestrasAFiltrar) {
-		//Como es un and ...
+		//Como es un and solo importan los resultados que se encuentran en ambas busquedas, por lo que se hace un retainAll entre las mismas.
 		List<Muestra> nuevaListaFiltrada = new ArrayList<>();
 
 		List<Muestra> primerFiltrado = this.getPrimerBusqueda().filtrar(muestrasAFiltrar);
