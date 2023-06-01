@@ -39,9 +39,9 @@ class NivelDeVerificacionTestCase {
 	@Test
 	void verificacionDeFiltradoDeUnFiltroPorNivelDeVerificacion() {
 		//Mockeando las muestras
-		when(muestra1.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VOTADA);
-		when(muestra2.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VERIFICADA); 
-		when(muestra3.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VOTADA);
+		when(muestra1.obtenerNivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VOTADA);
+		when(muestra2.obtenerNivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VERIFICADA); 
+		when(muestra3.obtenerNivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VOTADA);
 
 		//Setup
 		List<Muestra> muestrasAFiltrar = Arrays.asList(this.muestra1, this.muestra2, this.muestra3);

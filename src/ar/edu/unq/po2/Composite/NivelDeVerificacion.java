@@ -26,7 +26,7 @@ public class NivelDeVerificacion implements IFiltro {
 	@Override
 	public List<Muestra> filtrar(List<Muestra> muestrasAFiltrar) {
 		return muestrasAFiltrar.stream()
-                               .filter(m -> m.nivelDeVerificacion().equals(this.getNivelDeVerificacionAFiltrar())) 
+                               .filter(m -> m.obtenerNivelDeVerificacion().equals(this.getNivelDeVerificacionAFiltrar())) 
                                .toList();
 	}
 

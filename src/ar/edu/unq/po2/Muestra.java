@@ -78,7 +78,7 @@ public class Muestra {
 		this.getOpiniones().add(opinion);		
 	}
 
-	public Double distanciaConMuestra(Muestra muestra) {
+	public double distanciaConMuestra(Muestra muestra) {
 		return this.getUbicacion().distanciaCon(muestra.getUbicacion());
 	}
 
@@ -86,8 +86,13 @@ public class Muestra {
 		return this.getOpiniones().get(this.getOpiniones().size() - 1).getFechaDeCreacion();
 	}
 
-	public ENivelDeVerificacion nivelDeVerificacion() {
-		return ENivelDeVerificacion.VERIFICADA;
-	}	
-	
+	public ENivelDeVerificacion obtenerNivelDeVerificacion() {
+		ENivelDeVerificacion resultado = ENivelDeVerificacion.VOTADA;
+		// Una opinion es verificada cuando dos expertos opinan lo mismo.
+		if(this.getOpiniones().stream().filter(o -> o.esOpinionDeExperto()).count((Opinion o1, Opinion o2) -> o1.tieneElMismoTipoDeOpinionQue(o2)).size() >= 2) {
+			resultado = ENivelDeVerificacion.VERIFICADA;
+		}
+		return resultado;
+	}
+
 }
