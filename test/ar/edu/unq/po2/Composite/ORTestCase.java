@@ -93,5 +93,29 @@ class ORTestCase {
 		verify(this.filtroFechaUltimaVotacion, times(1)).filtrar(muestrasAFiltrar);
 		verify(this.filtroNivelDeVerificacion, times(1)).filtrar(muestrasAFiltrar);
 	}
+	
+	@Test
+	void verificacionDeBusquedaDeTipoORRetornaVacio() {
+		//Setup
+		List<Muestra> muestrasAFiltrar = Arrays.asList(this.muestra1, this.muestra2, this.muestra3, this.muestra4, this.muestra5);
+			
+		// Las muestras filtradas esperadas están vacías para que no se filtre por ninguna muestra y el resultado
+		//  efectivamente sea vacio.
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda1 = Arrays.asList();
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda2 = Arrays.asList();
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda3 = Arrays.asList();
+		
+		//Mockeando las busquedas
+		when(filtroFechaDeCreacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda1);
+		when(filtroFechaUltimaVotacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda2);
+		when(filtroNivelDeVerificacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda3);
+		
+		assertTrue(this.or1.filtrar(muestrasAFiltrar).isEmpty());
+		
+		verify(this.filtroFechaDeCreacion,     times(1)).filtrar(muestrasAFiltrar);
+		verify(this.filtroFechaUltimaVotacion, times(1)).filtrar(muestrasAFiltrar);
+		verify(this.filtroNivelDeVerificacion, times(1)).filtrar(muestrasAFiltrar);
+		
+	}
 
 }

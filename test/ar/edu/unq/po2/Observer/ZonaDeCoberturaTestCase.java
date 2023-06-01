@@ -168,5 +168,26 @@ class ZonaDeCoberturaTestCase {
 		
 		verify(this.organizacionObserver, times(1)).nuevaMuestraCargada(this.zonaQuilmes, this.muestra);
 	}
+	
+	@Test
+	void verificacionCuandoUnaZonaDeCoberturaNotificaUnaValidacionDeUnaMuestraASusListeners() {
+		//Mockeando la ubicacion de la muestra
+		when(ubicacionDeMuestra.getLatitud()).thenReturn(1d);
+		when(ubicacionDeMuestra.getLongitud()).thenReturn(3d);
+		
+		//Mockeando la muestra
+		when(muestra.getUbicacion()).thenReturn(ubicacionDeMuestra);
+		
+		//Mockeando las ubicaciones de zonaQuilmes.
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeBordeQuilmes)).thenReturn(7d); // el radio de ZonaQuilmes
+		when(ubicacionDeEpicentroQuilmes.distanciaCon(ubicacionDeMuestra)).thenReturn(4d);
+		
+		//Excersice
+		this.zonaQuilmes.subscribirObserver(this.organizacionObserver);
+		this.zonaQuilmes.agregarMuestra(this.muestra);
+		
+		verify(this.organizacionObserver, times(1)).nuevaMuestraCargada(this.zonaQuilmes, this.muestra);
+		verify(this.organizacionObserver, times(1)).nuevaValidacionDeMuestra(this.zonaQuilmes, this.muestra);
+	}
 
 }

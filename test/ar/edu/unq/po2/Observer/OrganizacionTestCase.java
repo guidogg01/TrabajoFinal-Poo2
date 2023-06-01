@@ -55,11 +55,19 @@ class OrganizacionTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoSeRecibeNotificacionDeNuevaMuestraCargada() {
+	void verificacionCuandoSeRecibeUnaNotificacionDeNuevaMuestraCargada() {
 		//Excersice
 		this.organizacion.nuevaMuestraCargada(this.zonaDeCobertura, this.muestra);
 		
 		verify(this.funcionalidadExterna, times(1)).nuevoEvento(this.organizacion, this.zonaDeCobertura, this.muestra);
 	}
 
+	@Test
+	void verificacionCuandoSeRecibeUnaNotificacionDeUnaNuevaValidacionDeMuestra() {
+		//Excersice
+		this.organizacion.nuevaValidacionDeMuestra(zonaDeCobertura, muestra);
+		
+		verify(this.funcionalidadExterna, times(1)).nuevoEvento(this.organizacion, this.zonaDeCobertura, this.muestra);
+	}
+	
 }

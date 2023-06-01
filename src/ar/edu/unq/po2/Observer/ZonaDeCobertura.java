@@ -92,5 +92,13 @@ public class ZonaDeCobertura extends Subject {
 		this.getObservers()
 		    .stream()
 		    .forEach(o -> o.nuevaMuestraCargada(this, muestra));
+		this.notificarValidacionDeMuestra(muestra);
 	}
+	
+	private void notificarValidacionDeMuestra(Muestra muestra) {
+		this.getObservers()
+		    .stream()
+	        .forEach(o -> o.nuevaValidacionDeMuestra(this, muestra));
+	}
+	
 }

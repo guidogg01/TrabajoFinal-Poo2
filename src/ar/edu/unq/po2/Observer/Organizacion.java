@@ -68,7 +68,7 @@ public class Organizacion implements IZonaDeCoberturaListeners {
  
 	@Override
 	public void nuevaValidacionDeMuestra(ZonaDeCobertura zonaDeCobertura, Muestra muestra) {
-		// this.getFuncionalidadExterna().nuevoEvento(this. zonaDeCobertura, muestra);
+		this.getFuncionalidadExterna().nuevoEvento(this, zonaDeCobertura, muestra);
 	}	
 	
 }

@@ -22,7 +22,7 @@ class NivelDeVerificacionTestCase {
 	@BeforeEach
 	void setUp() {
 		
-		filtro = new NivelDeVerificacion(true);
+		filtro = new NivelDeVerificacion(ENivelDeVerificacion.VERIFICADA);
 		
 		muestra1 = mock(Muestra.class);
 		muestra2 = mock(Muestra.class);
@@ -31,17 +31,17 @@ class NivelDeVerificacionTestCase {
 	}
 
 	@Test
-	void verificacionDeInicializacionDeUnFiltroPorFechaDeCreacion() {		
-		assertTrue(this.filtro.getNivelDeVerificacionAFiltrar());
+	void verificacionDeInicializacionDeUnFiltroPorNivelDeVerificacion() {		
+		assertEquals(ENivelDeVerificacion.VERIFICADA, this.filtro.getNivelDeVerificacionAFiltrar());
 	}
 
 	
 	@Test
-	void verificacionDeFiltradoDeUnFiltroPorFechaDeCreacion() {
+	void verificacionDeFiltradoDeUnFiltroPorNivelDeVerificacion() {
 		//Mockeando las muestras
-		when(muestra1.esVerificada()).thenReturn(false);
-		when(muestra2.esVerificada()).thenReturn(true); 
-		when(muestra3.esVerificada()).thenReturn(false);
+		when(muestra1.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VOTADA);
+		when(muestra2.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VERIFICADA); 
+		when(muestra3.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VOTADA);
 
 		//Setup
 		List<Muestra> muestrasAFiltrar = Arrays.asList(this.muestra1, this.muestra2, this.muestra3);

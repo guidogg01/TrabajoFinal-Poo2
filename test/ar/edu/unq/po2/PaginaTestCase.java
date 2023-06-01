@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.Composite.Busqueda;
+
 class PaginaTestCase {
 	
 	private Pagina  pagina;
@@ -17,12 +19,16 @@ class PaginaTestCase {
 	private Muestra muestra2;
 	private Muestra muestra3;
 	
+	private Busqueda busqueda;
+	
 	@BeforeEach
 	void setUp() {
 		
 		muestra1 = mock(Muestra.class);
 		muestra2 = mock(Muestra.class);
 		muestra3 = mock(Muestra.class);
+		
+		busqueda = mock(Busqueda.class);
 		
 		pagina  = new Pagina();
 		
@@ -42,7 +48,7 @@ class PaginaTestCase {
 	}
 	
 	@Test
-	void verificacionDeMuestrasCercanasAOtra() {
+	void verificacionCuandoUnaPaginaBuscaLasMuestrasCercanasAOtra() {
 		//setUp
 		this.pagina.agregarMuestra(this.muestra2);
 		this.pagina.agregarMuestra(this.muestra3);
@@ -56,4 +62,39 @@ class PaginaTestCase {
 		assertEquals(muestrasCercanasEsperadas, this.pagina.muestrasCercanasDe(this.muestra1, 6d));
 	}
 
+	@Test
+	void verificacionCuandoUnaPaginaRealizaUnFiltradoDeMuestras() {
+		//setUp
+		this.pagina.agregarMuestra(this.muestra1);
+		this.pagina.agregarMuestra(this.muestra2);
+		this.pagina.agregarMuestra(this.muestra3);
+		
+		List<Muestra> muestrasFiltradasPorLaBusqueda = Arrays.asList(this.muestra1);
+		
+		//Mockeando la busqueda
+		when(busqueda.filtrar(pagina.getMuestras())).thenReturn(muestrasFiltradasPorLaBusqueda);
+		
+		assertEquals(muestrasFiltradasPorLaBusqueda, this.pagina.filtrarMuestras(this.busqueda));
+		verify(busqueda, times(1)).filtrar(pagina.getMuestras());
+	
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

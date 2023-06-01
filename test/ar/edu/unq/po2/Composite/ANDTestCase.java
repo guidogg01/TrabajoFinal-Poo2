@@ -89,8 +89,52 @@ class ANDTestCase {
 		
 		assertEquals(muestrasFiltradasEsperadas, this.and1.filtrar(muestrasAFiltrar));
 		
-		verify(this.filtroFechaDeCreacion, times(1)).filtrar(muestrasAFiltrar);
+		verify(this.filtroFechaDeCreacion,     times(1)).filtrar(muestrasAFiltrar);
 		verify(this.filtroFechaUltimaVotacion, times(1)).filtrar(muestrasAFiltrar);
 		verify(this.filtroNivelDeVerificacion, times(1)).filtrar(muestrasAFiltrar);
 	}
+	
+	@Test
+	void verificacionDeBusquedaDeTipoANDRetornaVacio() {
+		//Setup
+		List<Muestra> muestrasAFiltrar = Arrays.asList(this.muestra1, this.muestra2, this.muestra3, this.muestra4, this.muestra5);
+			
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda1 = Arrays.asList(this.muestra1, this.muestra3);
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda2 = Arrays.asList(this.muestra2);
+		List<Muestra> muestrasFiltradasEsperadasParaBusqueda3 = Arrays.asList(this.muestra4, this.muestra1, this.muestra5);
+		
+		//Mockeando las busquedas
+		when(filtroFechaDeCreacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda1);
+		when(filtroFechaUltimaVotacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda2);
+		when(filtroNivelDeVerificacion.filtrar(muestrasAFiltrar)).thenReturn(muestrasFiltradasEsperadasParaBusqueda3);
+		
+		assertTrue(this.and1.filtrar(muestrasAFiltrar).isEmpty());
+		
+		verify(this.filtroFechaDeCreacion,     times(1)).filtrar(muestrasAFiltrar);
+		verify(this.filtroFechaUltimaVotacion, times(1)).filtrar(muestrasAFiltrar);
+		verify(this.filtroNivelDeVerificacion, times(1)).filtrar(muestrasAFiltrar);
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

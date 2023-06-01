@@ -2,6 +2,8 @@ package ar.edu.unq.po2;
 
 import java.util.List;
 
+import ar.edu.unq.po2.Composite.Busqueda;
+
 import java.util.ArrayList;
 
 public class Pagina {
@@ -30,5 +32,9 @@ public class Pagina {
 				   .stream()
 				   .filter(m -> muestra.distanciaConMuestra(m) < distanciaMaxima)
 				   .toList();
+	}
+
+	public List<Muestra> filtrarMuestras(Busqueda busqueda) {
+		return busqueda.filtrar(this.getMuestras());
 	}
 }

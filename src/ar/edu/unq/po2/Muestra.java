@@ -1,6 +1,9 @@
 package ar.edu.unq.po2;
 
 import java.util.List;
+
+import ar.edu.unq.po2.Composite.ENivelDeVerificacion;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -83,9 +86,8 @@ public class Muestra {
 		return this.getOpiniones().get(this.getOpiniones().size() - 1).getFechaDeCreacion();
 	}
 
-	public boolean esVerificada() {
-		// retorna true en caso de que 2 expertos la hayan validado, en caso contrario retorna false, lo cual indica que es votada.
-		return true; // ESTA HARDCODEADO HACER TDD Y DEMÁS.
-	}
+	public ENivelDeVerificacion nivelDeVerificacion() {
+		return ENivelDeVerificacion.VERIFICADA;
+	}	
 	
 }
