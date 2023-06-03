@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.Composite;
+package ar.edu.unq.po2;
 
 public enum ENivelDeVerificacion {
 

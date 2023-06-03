@@ -73,7 +73,6 @@ public class ZonaDeCobertura extends Subject {
 				             .filter(z -> this.radio() > this.getEpicentro().distanciaCon(z.getBorde()))
 				             .toList();
 	}
-
 	
 	private boolean estaDentroDeLaZona(Muestra muestra) {
 		// Una Muestra esta dentro de la una zonaDeCobertura, si y solo si el radio de la zonaDeCobertura es mayor a la 
@@ -84,21 +83,8 @@ public class ZonaDeCobertura extends Subject {
 	public void agregarMuestra(Muestra muestra) {
 		if(this.estaDentroDeLaZona(muestra)) {
 			this.getMuestras().add(muestra);
-			this.notificarCargaDeMuestra(muestra);
+			super.notificarCargaDeMuestra(this, muestra);
 		}
-	}
-	
-	private void notificarCargaDeMuestra(Muestra muestra) {
-		this.getObservers()
-		    .stream()
-		    .forEach(o -> o.nuevaMuestraCargada(this, muestra));
-		this.notificarValidacionDeMuestra(muestra);
-	}
-	
-	private void notificarValidacionDeMuestra(Muestra muestra) {
-		this.getObservers()
-		    .stream()
-	        .forEach(o -> o.nuevaValidacionDeMuestra(this, muestra));
 	}
 	
 }

@@ -3,6 +3,8 @@ package ar.edu.unq.po2.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.unq.po2.Muestra;
+
 public class Subject {
 	
 	private List<IZonaDeCoberturaListeners> observers;
@@ -26,6 +28,19 @@ public class Subject {
 	
 	public void desubscribirObserver(IZonaDeCoberturaListeners observer) {
 		this.getObservers().remove(observer);
+	}
+	
+	public void notificarCargaDeMuestra(ZonaDeCobertura zonaDeCobertura, Muestra muestra) {
+		this.getObservers()
+		    .stream()
+		    .forEach(o -> o.nuevaMuestraCargada(zonaDeCobertura, muestra));
+		this.notificarValidacionDeMuestra(zonaDeCobertura, muestra);
+	}
+	
+	public void notificarValidacionDeMuestra(ZonaDeCobertura zonaDeCobertura, Muestra muestra) {
+		this.getObservers()
+		    .stream()
+	        .forEach(o -> o.nuevaValidacionDeMuestra(zonaDeCobertura, muestra));
 	}
 
 }

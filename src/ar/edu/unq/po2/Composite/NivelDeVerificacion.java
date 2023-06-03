@@ -2,6 +2,7 @@ package ar.edu.unq.po2.Composite;
 
 import java.util.List;
 
+import ar.edu.unq.po2.ENivelDeVerificacion;
 import ar.edu.unq.po2.Muestra;
 
 public class NivelDeVerificacion implements IFiltro {

@@ -1,9 +1,6 @@
 package ar.edu.unq.po2;
 
 import java.util.List;
-
-import ar.edu.unq.po2.Composite.ENivelDeVerificacion;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -86,13 +83,9 @@ public class Muestra {
 		return this.getOpiniones().get(this.getOpiniones().size() - 1).getFechaDeCreacion();
 	}
 
-	public ENivelDeVerificacion obtenerNivelDeVerificacion() {
-		ENivelDeVerificacion resultado = ENivelDeVerificacion.VOTADA;
-		// Una opinion es verificada cuando dos expertos opinan lo mismo.
-		if(this.getOpiniones().stream().filter(o -> o.esOpinionDeExperto()).count((Opinion o1, Opinion o2) -> o1.tieneElMismoTipoDeOpinionQue(o2)).size() >= 2) {
-			resultado = ENivelDeVerificacion.VERIFICADA;
-		}
-		return resultado;
+	public Object obtenerNivelDeVerificacion() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

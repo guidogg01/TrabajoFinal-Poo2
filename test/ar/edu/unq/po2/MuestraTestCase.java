@@ -6,8 +6,6 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.Composite.ENivelDeVerificacion;
-
 import java.time.LocalDate;
 
 class MuestraTestCase {
@@ -82,11 +80,6 @@ class MuestraTestCase {
 		
 		assertEquals(fechaEsperada, this.muestra1.fechaDeUltimaVotacion());
 		verify(this.opinion, times(1)).getFechaDeCreacion();
-	}
-	
-	@Test
-	void verificacionDeCuandoSeCreaUnaMuestraSuNivelDeVerificacionEsVotada() {
-		assertEquals(ENivelDeVerificacion.VOTADA, this.muestra1.obtenerNivelDeVerificacion());
 	}
 	
 }

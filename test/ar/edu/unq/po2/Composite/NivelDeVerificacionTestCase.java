@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.ENivelDeVerificacion;
 import ar.edu.unq.po2.Muestra;
 
 class NivelDeVerificacionTestCase {
