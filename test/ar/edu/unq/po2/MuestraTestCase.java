@@ -5,27 +5,34 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import ar.edu.unq.po2.StateMuestra.EstadoVotada;
 
 import java.time.LocalDate;
 
 class MuestraTestCase {
 
-	private Muestra   muestra1;
-	private Muestra   muestra2;
+	private Muestra   	 muestra1;
+	private Muestra   	 muestra2;
 	
-	private Ubicacion ubicacion1;
-	private Ubicacion ubicacion2;
+	private Ubicacion 	 ubicacion1;
+	private Ubicacion 	 ubicacion2;
 	
-	private Opinion   opinion;
+	private Opinion   	 opinion;
+	
+	private EstadoVotada estadoVotada;
 	
 	
 	@BeforeEach
 	void setUp(){
 		
-		ubicacion1 = mock(Ubicacion.class);
-		ubicacion2 = mock(Ubicacion.class);
+		ubicacion1   = mock(Ubicacion.class);
+		ubicacion2   = mock(Ubicacion.class);
 
-		opinion   = mock(Opinion.class);
+		opinion      = mock(Opinion.class);
+		
+		estadoVotada = mock(EstadoVotada.class);
 		
 		muestra1   = new Muestra(Vinchuca.SORDIDA,   10, ubicacion1, LocalDate.now());
 		muestra2   = new Muestra(Vinchuca.GUASAYANA, 5 , ubicacion2, LocalDate.now());
@@ -48,6 +55,7 @@ class MuestraTestCase {
 		assertEquals(latitudEsperadaDeLaUbicacion, this.muestra1.getUbicacion().getLatitud());
 		assertEquals(LocalDate.now(), this.muestra1.getFechaDeCreacion());
 		assertTrue(this.muestra1.getOpiniones().isEmpty());
+		// assertEquals(this.estadoVotada, this.muestra1.getEstadoActual()); Preguntar como poder testear esto.
 	}
 	
 	@Test
@@ -81,6 +89,19 @@ class MuestraTestCase {
 		assertEquals(fechaEsperada, this.muestra1.fechaDeUltimaVotacion());
 		verify(this.opinion, times(1)).getFechaDeCreacion();
 	}
+	
+	@Test
+	void verificacionCuandoSeCreaUnaMuestraSuEstadoEsVotada() {
+		assertEquals(ENivelDeVerificacion.VOTADA, this.muestra1.obtenerNivelDeVerificacion());
+	}
+	
+//	@Test  No se puede hacer debido al mismo error que en la inicializacion.
+//	void verificacionCuandoElEstadoDeUnaMuestraEsVerificada() {
+//		//mockeando el estado de la muestra
+//		when(estadoVotada.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VERIFICADA);
+//				
+//		assertEquals(ENivelDeVerificacion.VERIFICADA, this.muestra1.obtenerNivelDeVerificacion());
+//	}
 	
 }
 
