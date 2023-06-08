@@ -39,4 +39,11 @@ public class Opinion {
 		this.fechaDeCreacion = fechaDeCreacion;
 	}
 
+	public boolean esOpinadaPorExperto() {
+		return this.getOpinador().esExperto();
+	}
+
+	public boolean tieneMismoTipoDeOpinionQue(Opinion opinion) {
+		return this.getTipoDeOpinion().equals(opinion.getTipoDeOpinion());
+	}
 }

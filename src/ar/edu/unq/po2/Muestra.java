@@ -106,13 +106,16 @@ public class Muestra {
 	public boolean coincidieronExpertos() {
 		// COMPLETAR hacer test
 		// agarra todos los expertos que hayan votado, y se fija si hay al menos 2 que opinan lo mismo.
-		return false;
+		List<Opinion> opinionesDeExpertos = this.getOpiniones().stream().filter(o -> o.esOpinadaPorExperto()).toList();
+		
+		return opinionesDeExpertos.stream()
+				                  .anyMatch(opinion1 -> this.getOpiniones()
+				                    .stream()
+				                	.anyMatch(opinion2 -> opinion1.tieneMismoTipoDeOpinionQue(opinion2)));
 	}
 	
-	public TipoDeOpinion resultadoActual() {
-		// COMPLETAR hacer test
+	public TipoDeOpinion resultadoActual() { 
 		return null;
 	}
-
 
 }

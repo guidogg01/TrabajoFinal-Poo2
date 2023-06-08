@@ -20,6 +20,8 @@ class MuestraTestCase {
 	private Ubicacion 	 ubicacion2;
 	
 	private Opinion   	 opinion;
+	private Opinion   	 opinion2;
+	private Opinion   	 opinion3;
 	
 	private EstadoVotada estadoVotada;
 	
@@ -31,6 +33,8 @@ class MuestraTestCase {
 		ubicacion2   = mock(Ubicacion.class);
 
 		opinion      = mock(Opinion.class);
+		opinion2     = mock(Opinion.class);
+		opinion3     = mock(Opinion.class);
 		
 		estadoVotada = mock(EstadoVotada.class);
 		
@@ -102,6 +106,28 @@ class MuestraTestCase {
 //				
 //		assertEquals(ENivelDeVerificacion.VERIFICADA, this.muestra1.obtenerNivelDeVerificacion());
 //	}
+	
+	@Test
+	void verificacionCuandoEnUnaMuestraCoincidieronExpertos() {
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
+		
+		//Mockeando las opiniones
+		when(opinion.esOpinadaPorExperto()).thenReturn(true);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
+		
+		when(opinion.tieneMismoTipoDeOpinionQue(opinion3)).thenReturn(true);
+		
+		assertTrue(this.muestra1.coincidieronExpertos());
+	}
+	
+	@Test
+	void verificacionDelResultadoActualSeCreaUnaMuestraEsSuTipoDeOpinion() {
+		assertEquals(Vinchuca.SORDIDA, this.muestra1.getTipoDeVinchucaFotografiada());
+	}
 	
 }
 
