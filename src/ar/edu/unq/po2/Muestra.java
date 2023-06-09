@@ -1,6 +1,8 @@
 package ar.edu.unq.po2;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import ar.edu.unq.po2.StateMuestra.EstadoDeMuestra;
 import ar.edu.unq.po2.StateMuestra.EstadoVotada;
@@ -12,17 +14,19 @@ public class Muestra {
 	
 	private TipoDeOpinion   tipoDeVinchucaFotografiada;
 	private String          foto;
+	private Participante    participante;
 	private int             idDeParticipante;
 	private Ubicacion       ubicacion;
 	private LocalDate       fechaDeCreacion;
 	private List<Opinion>   opiniones;
 	private EstadoDeMuestra estadoActual;
 	
-	Muestra(TipoDeOpinion tipoDeVinchucaFotografiada, int idDeParticipante, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
+	Muestra(TipoDeOpinion tipoDeVinchucaFotografiada, Participante participante, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
 		super();
 		this.setTipoDeVinchucaFotografiada(tipoDeVinchucaFotografiada);
 		this.setFoto(this.getTipoDeVinchucaFotografiada().getDescripcion()); //En base a la vinchuca fotografiada es la descripción.
-		this.setIdDeParticipante(idDeParticipante);
+		this.setParticipante(participante);
+		this.setIdDeParticipante(this.getParticipante().getID());
 		this.setUbicacion(ubicacion);
 		this.setFechaDeCreacion(fechaDeCreacion);
 		this.setOpiniones(new ArrayList<Opinion>());
@@ -46,6 +50,14 @@ public class Muestra {
 
 	private void setFoto(String foto) {
 		this.foto = foto;
+	}
+
+	public Participante getParticipante() {
+		return participante;
+	}
+
+	private void setParticipante(Participante participante) {
+		this.participante = participante;
 	}
 
 	public int getIdDeParticipante() {
@@ -115,18 +127,82 @@ public class Muestra {
 	}
 
 	public boolean coincidieronExpertos() {
-		// COMPLETAR hacer test
-		// agarra todos los expertos que hayan votado, y se fija si hay al menos 2 que opinan lo mismo.
-		List<Opinion> opinionesDeExpertos = this.getOpiniones().stream().filter(o -> o.esOpinadaPorExperto()).toList();
-		
-		return opinionesDeExpertos.stream()
-				                  .anyMatch(opinion1 -> this.getOpiniones()
-				                    .stream()
-				                	.anyMatch(opinion2 -> opinion1.tieneMismoTipoDeOpinionQue(opinion2)));
+		// agarra todos los expertos que hayan votado, y se fija si hay al menos 2 que opinan lo mismo.		
+		return this.opinionesDeExpertos().stream()
+				                         .anyMatch(tipoDeOpinion1 -> this.opinionesDeExpertos()
+				                           .stream()
+				                	       .anyMatch(tipoDeOpinion2 -> tipoDeOpinion1.equals(tipoDeOpinion2)));
 	}
 	
 	public TipoDeOpinion resultadoActual() { 
-		return this.getTipoDeVinchucaFotografiada();
+		TipoDeOpinion resultado = votoPorParticipantesBasicos();
+		if (esVotadaPorExpertos()) {
+			resultado = votoPorParticipantesExpertos();
+		}
+		return resultado;
+	} 
+	
+	private List<TipoDeOpinion> opinionesDeExpertos() {
+		List<TipoDeOpinion> nuevaListaDeOpiniones = new ArrayList<>();
+		
+		List<TipoDeOpinion> opinionesDeExpertos = this.getOpiniones().stream()
+				                                                     .filter(o -> o.esOpinadaPorExperto())
+				                                                     .map(o -> o.getTipoDeOpinion())
+				                                                     .toList();
+		nuevaListaDeOpiniones.addAll(opinionesDeExpertos);
+		
+		if (this.getParticipante().esExperto()) {
+			nuevaListaDeOpiniones.add(this.getTipoDeVinchucaFotografiada());
+		}
+		
+		return nuevaListaDeOpiniones;
 	}
-
+	
+	private List<TipoDeOpinion> opinionesDeBasicos() {
+		List<TipoDeOpinion> nuevaListaDeOpiniones = new ArrayList<>();
+		
+		List<TipoDeOpinion> opinionesDeBasicos = this.getOpiniones().stream()
+				                                                    .filter(o -> !o.esOpinadaPorExperto())
+				                                                    .map(o -> o.getTipoDeOpinion())
+				                                                    .toList();
+		nuevaListaDeOpiniones.addAll(opinionesDeBasicos);
+		
+		if (!this.getParticipante().esExperto()) {
+			nuevaListaDeOpiniones.add(this.getTipoDeVinchucaFotografiada());
+		}
+		
+		return nuevaListaDeOpiniones;
+	}
+	
+	private TipoDeOpinion votoPorParticipantesBasicos() {
+		return this.encontrarTipoDeOpinionMasRepetido(this.opinionesDeBasicos());
+	}
+	
+	private TipoDeOpinion votoPorParticipantesExpertos() {
+		return this.encontrarTipoDeOpinionMasRepetido(this.opinionesDeExpertos());
+	}
+	
+	private TipoDeOpinion encontrarTipoDeOpinionMasRepetido(List<TipoDeOpinion> opinionesAProcesar) {
+		
+		Map<TipoDeOpinion, Integer> contador = new HashMap<>();
+        TipoDeOpinion elementoMasRepetido = null;
+        int maxFrecuencia = 0;
+        
+        for (TipoDeOpinion tipoDeOpinion : opinionesAProcesar) {
+            int frecuencia = contador.getOrDefault(tipoDeOpinion, 0) + 1;
+            contador.put(tipoDeOpinion, frecuencia);
+            
+            if (frecuencia > maxFrecuencia) {
+                maxFrecuencia = frecuencia;
+                elementoMasRepetido = tipoDeOpinion;
+            }
+        }
+        
+        return elementoMasRepetido;
+	}
+	
+	private boolean esVotadaPorExpertos() {
+		return this.getParticipante().esExperto() || this.getOpiniones().stream().anyMatch(o -> o.esOpinadaPorExperto());
+	}
+	
 }

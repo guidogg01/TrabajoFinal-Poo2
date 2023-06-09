@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.ENivelDeVerificacion;
 import ar.edu.unq.po2.Muestra;
+import ar.edu.unq.po2.StateMuestra.EstadoVerificada;
 
 class EstadoVerificadaTestCase {
 
