@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Muestra {
 	
-	private Vinchuca        tipoDeVinchucaFotografiada;
+	private TipoDeOpinion   tipoDeVinchucaFotografiada;
 	private String          foto;
 	private int             idDeParticipante;
 	private Ubicacion       ubicacion;
@@ -18,7 +18,7 @@ public class Muestra {
 	private List<Opinion>   opiniones;
 	private EstadoDeMuestra estadoActual;
 	
-	Muestra(Vinchuca tipoDeVinchucaFotografiada, int idDeParticipante, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
+	Muestra(TipoDeOpinion tipoDeVinchucaFotografiada, int idDeParticipante, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
 		super();
 		this.setTipoDeVinchucaFotografiada(tipoDeVinchucaFotografiada);
 		this.setFoto(this.getTipoDeVinchucaFotografiada().getDescripcion()); //En base a la vinchuca fotografiada es la descripción.
@@ -29,11 +29,14 @@ public class Muestra {
 		this.setEstadoActual(new EstadoVotada(this));
 	}
 
-	public Vinchuca getTipoDeVinchucaFotografiada() {
+	public TipoDeOpinion getTipoDeVinchucaFotografiada() {
 		return tipoDeVinchucaFotografiada;
 	}
 
-	private void setTipoDeVinchucaFotografiada(Vinchuca tipoDeVinchucaFotografiada) {
+	private void setTipoDeVinchucaFotografiada(TipoDeOpinion tipoDeVinchucaFotografiada) {
+		if (!esTipoAceptable(tipoDeVinchucaFotografiada)) {
+			throw new IllegalArgumentException("Error, no es un tipo de vinchuca.");
+		}
 		this.tipoDeVinchucaFotografiada = tipoDeVinchucaFotografiada;
 	}
 
@@ -86,6 +89,14 @@ public class Muestra {
 		// Se deja public debido a que cada estadoActual debe poder cambiar el de la muestra.
 		this.estadoActual = estadoActual;
 	}
+	
+	private boolean esTipoAceptable(TipoDeOpinion tipoDeOpinion) {
+		return (tipoDeOpinion.equals(TipoDeOpinion.VINCHUCASORDIDA))
+				||
+			   (tipoDeOpinion.equals(TipoDeOpinion.VINCHUCAINFESTANS))
+			    ||
+			   (tipoDeOpinion.equals(TipoDeOpinion.VINCHUCAGUASAYANA));
+	}
 
 	public void agregarOpinion(Opinion opinion) {
 		this.getOpiniones().add(opinion);		
@@ -115,7 +126,7 @@ public class Muestra {
 	}
 	
 	public TipoDeOpinion resultadoActual() { 
-		return null;
+		return this.getTipoDeVinchucaFotografiada();
 	}
 
 }

@@ -1,11 +1,11 @@
 package ar.edu.unq.po2;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import ar.edu.unq.po2.StateMuestra.EstadoVotada;
 
@@ -38,8 +38,9 @@ class MuestraTestCase {
 		
 		estadoVotada = new EstadoVotada(muestra1);
 		
-		muestra1   = new Muestra(Vinchuca.SORDIDA,   10, ubicacion1, LocalDate.now());
-		muestra2   = new Muestra(Vinchuca.GUASAYANA, 5 , ubicacion2, LocalDate.now());
+		muestra1   = new Muestra(TipoDeOpinion.VINCHUCASORDIDA,   10, ubicacion1, LocalDate.now());
+		muestra2   = new Muestra(TipoDeOpinion.VINCHUCAGUASAYANA, 5 , ubicacion2, LocalDate.now());
+		
 	}
 	
 	@Test
@@ -47,7 +48,7 @@ class MuestraTestCase {
 		//Mockeando la ubicacion
 		when(ubicacion1.getLatitud()).thenReturn(4d);
 	
-		Vinchuca tipoDeVinchucaFotografiadaEsperado = Vinchuca.SORDIDA;
+		TipoDeOpinion tipoDeVinchucaFotografiadaEsperado = TipoDeOpinion.VINCHUCASORDIDA;
 		String fotoEsperada = "Soy una vinchuca Sordida";
 		int idDeParticipanteEsperado = 10;
 		Double latitudEsperadaDeLaUbicacion = 4d;
@@ -60,6 +61,13 @@ class MuestraTestCase {
 		assertEquals(LocalDate.now(), this.muestra1.getFechaDeCreacion());
 		assertTrue(this.muestra1.getOpiniones().isEmpty());
 		assertEquals(this.estadoVotada.getClass(), this.muestra1.getEstadoActual().getClass());
+	}
+	
+	@Test
+	void verificacionCuandoUnTipoDeVinchucaFotografiadaNoEsElEsperado() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			new Muestra(TipoDeOpinion.PHTIACHINCHE, 2, ubicacion2, LocalDate.now()); //Esto funciona pero está afuera del coverage
+		});
 	}
 	
 	@Test
@@ -135,7 +143,7 @@ class MuestraTestCase {
 	
 	@Test
 	void verificacionDelResultadoActualSeCreaUnaMuestraEsSuTipoDeOpinion() {
-		// assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual()); ARREGLAR
+		assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual());
 	}
 	
 }
