@@ -36,7 +36,7 @@ class MuestraTestCase {
 		opinion2     = mock(Opinion.class);
 		opinion3     = mock(Opinion.class);
 		
-		estadoVotada = mock(EstadoVotada.class);
+		estadoVotada = new EstadoVotada(muestra1);
 		
 		muestra1   = new Muestra(Vinchuca.SORDIDA,   10, ubicacion1, LocalDate.now());
 		muestra2   = new Muestra(Vinchuca.GUASAYANA, 5 , ubicacion2, LocalDate.now());
@@ -59,7 +59,7 @@ class MuestraTestCase {
 		assertEquals(latitudEsperadaDeLaUbicacion, this.muestra1.getUbicacion().getLatitud());
 		assertEquals(LocalDate.now(), this.muestra1.getFechaDeCreacion());
 		assertTrue(this.muestra1.getOpiniones().isEmpty());
-		// assertEquals(this.estadoVotada, this.muestra1.getEstadoActual()); Preguntar como poder testear esto.
+		assertEquals(this.estadoVotada.getClass(), this.muestra1.getEstadoActual().getClass());
 	}
 	
 	@Test
@@ -99,13 +99,22 @@ class MuestraTestCase {
 		assertEquals(ENivelDeVerificacion.VOTADA, this.muestra1.obtenerNivelDeVerificacion());
 	}
 	
-//	@Test  No se puede hacer debido al mismo error que en la inicializacion.
-//	void verificacionCuandoElEstadoDeUnaMuestraEsVerificada() {
-//		//mockeando el estado de la muestra
-//		when(estadoVotada.nivelDeVerificacion()).thenReturn(ENivelDeVerificacion.VERIFICADA);
-//				
-//		assertEquals(ENivelDeVerificacion.VERIFICADA, this.muestra1.obtenerNivelDeVerificacion());
-//	}
+	@Test
+	void verificacionCuandoElEstadoDeUnaMuestraEsVerificada() {
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
+		
+		//Mockeando las opiniones
+		when(opinion.esOpinadaPorExperto()).thenReturn(true);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
+		
+		when(opinion.tieneMismoTipoDeOpinionQue(opinion3)).thenReturn(true);
+		
+		assertEquals(ENivelDeVerificacion.VERIFICADA, this.muestra1.obtenerNivelDeVerificacion());
+	}
 	
 	@Test
 	void verificacionCuandoEnUnaMuestraCoincidieronExpertos() {
@@ -126,17 +135,7 @@ class MuestraTestCase {
 	
 	@Test
 	void verificacionDelResultadoActualSeCreaUnaMuestraEsSuTipoDeOpinion() {
-		assertEquals(Vinchuca.SORDIDA, this.muestra1.getTipoDeVinchucaFotografiada());
+		// assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual()); ARREGLAR
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
