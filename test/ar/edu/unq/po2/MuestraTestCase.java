@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.StateMuestra.EstadoVotada;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 class MuestraTestCase {
 
@@ -56,11 +54,11 @@ class MuestraTestCase {
 		//SetUp
 		TipoDeOpinion tipoDeVinchucaFotografiadaEsperado = TipoDeOpinion.VINCHUCASORDIDA;
 		String fotoEsperada = "Soy una vinchuca Sordida";
-		int idDeParticipanteEsperado = 4;
+		int    idDeParticipanteEsperado = 10;
 		Double latitudEsperadaDeLaUbicacion = 4d;
 		
 		//Mockeando el participante
-		when(participante2.getID()).thenReturn(4);
+		when(participante2.getID()).thenReturn(10);
 		
 		//Mockeando la ubicacion
 		when(ubicacion1.getLatitud()).thenReturn(4d);
@@ -68,7 +66,7 @@ class MuestraTestCase {
 		assertEquals(tipoDeVinchucaFotografiadaEsperado, this.muestra1.getTipoDeVinchucaFotografiada());
 		assertEquals(fotoEsperada, this.muestra1.getFoto());
 		assertEquals(this.participante2, this.muestra1.getParticipante());
-		//assertEquals(idDeParticipanteEsperado, this.muestra1.getIdDeParticipante()); ARREGLAR
+		assertEquals(idDeParticipanteEsperado, this.muestra1.getParticipante().getID()); // SE HACE DE ESTA MANERA PORQUE SE MOCKEAN DOS COSAS DIFERENTES... REVISAR!!!
 		assertEquals(latitudEsperadaDeLaUbicacion, this.muestra1.getUbicacion().getLatitud());
 		assertEquals(LocalDate.now(), this.muestra1.getFechaDeCreacion());
 		assertTrue(this.muestra1.getOpiniones().isEmpty());
