@@ -20,8 +20,13 @@ public class Opinion {
 	}
 
 	private void setTipoDeOpinion(TipoDeOpinion tipoDeOpinion) {
+		if (esTipoIndebido(tipoDeOpinion)) {
+			throw new IllegalArgumentException("Error, no es un tipo de opinion valido.");
+		}
+		
 		this.tipoDeOpinion = tipoDeOpinion;
 	}
+
 
 	public Participante getOpinador() {
 		return opinador;
@@ -38,12 +43,13 @@ public class Opinion {
 	private void setFechaDeCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
 	}
+	
+	private boolean esTipoIndebido(TipoDeOpinion tipoDeOpinion) {
+		return tipoDeOpinion == TipoDeOpinion.NODEFINIDO;
+	}
 
 	public boolean esOpinadaPorExperto() {
 		return this.getOpinador().esExperto();
 	}
-
-	public boolean tieneMismoTipoDeOpinionQue(Opinion opinion) {
-		return this.getTipoDeOpinion().equals(opinion.getTipoDeOpinion());
-	}
+	
 }

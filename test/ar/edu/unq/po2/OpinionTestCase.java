@@ -36,18 +36,18 @@ class OpinionTestCase {
 	}
 	
 	@Test
+	void verificacionCuandoUnTipoDeOpinionNoEsElEsperado() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			new Opinion(TipoDeOpinion.NODEFINIDO, participante, LocalDate.now()); //Esto funciona pero está afuera del coverage
+		});
+	}
+	
+	@Test
 	void verificacionCuandoUnaOpinionEsOpinadaPorExperto() {
 		// Mockeando el participante
 		when(participante.esExperto()).thenReturn(true);
 		
 		assertTrue(opinion.esOpinadaPorExperto());
-	}
-	
-	@Test
-	void verificacionCuandoUnaOpinionTieneElMismoTipoDeOpinionQueOtraOpinion() {
-		
-		assertTrue(opinion.tieneMismoTipoDeOpinionQue(opinion2));
-		
 	}
 
 }

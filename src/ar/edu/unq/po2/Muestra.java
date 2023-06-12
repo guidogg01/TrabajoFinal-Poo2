@@ -41,6 +41,7 @@ public class Muestra {
 		if (!esTipoAceptable(tipoDeVinchucaFotografiada)) {
 			throw new IllegalArgumentException("Error, no es un tipo de vinchuca.");
 		}
+		
 		this.tipoDeVinchucaFotografiada = tipoDeVinchucaFotografiada;
 	}
 
@@ -195,6 +196,8 @@ public class Muestra {
             if (frecuencia > maxFrecuencia) {
                 maxFrecuencia = frecuencia;
                 elementoMasRepetido = tipoDeOpinion;
+            } else if(frecuencia == maxFrecuencia) {
+            	elementoMasRepetido = TipoDeOpinion.NODEFINIDO;
             }
         }
         

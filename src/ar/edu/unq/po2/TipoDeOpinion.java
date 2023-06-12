@@ -8,7 +8,8 @@ public enum TipoDeOpinion {
 	CHINCHEFOLIADA   ("Soy una chinche Foliada"),
 	PHTIACHINCHE     ("Soy una phtia chinche"),
 	NINGUNA("La imagen no corresponde a un insecto"),
-	IMAGENPOCOCLARA("La imagen es poco clara");
+	IMAGENPOCOCLARA("La imagen es poco clara"), 
+	NODEFINIDO("El resultado actual es no definido");
 	
 	private String descripcion;
 	
