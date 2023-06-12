@@ -2,11 +2,12 @@ package ar.edu.unq.po2;
 
 import java.util.List;
 import java.util.Map;
+
+import ar.edu.unq.po2.State.Muestra.EstadoDeMuestra;
+import ar.edu.unq.po2.State.Muestra.EstadoVotada;
+import ar.edu.unq.po2.State.Participante.Participante;
+
 import java.util.HashMap;
-
-import ar.edu.unq.po2.StateMuestra.EstadoDeMuestra;
-import ar.edu.unq.po2.StateMuestra.EstadoVotada;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class Muestra {
 	private List<Opinion>   opiniones;
 	private EstadoDeMuestra estadoActual;
 	
-	Muestra(TipoDeOpinion tipoDeVinchucaFotografiada, Participante participante, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
+	public Muestra(TipoDeOpinion tipoDeVinchucaFotografiada, Participante participante, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
 		super();
 		this.setTipoDeVinchucaFotografiada(tipoDeVinchucaFotografiada);
 		this.setFoto(this.getTipoDeVinchucaFotografiada().getDescripcion()); //En base a la vinchuca fotografiada es la descripción.

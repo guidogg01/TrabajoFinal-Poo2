@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.StateMuestra;
+package ar.edu.unq.po2.State.Muestra;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 
 import ar.edu.unq.po2.ENivelDeVerificacion;
 import ar.edu.unq.po2.Muestra;
-import ar.edu.unq.po2.StateMuestra.EstadoVotada;
+import ar.edu.unq.po2.State.Muestra.EstadoVotada;
 
 class EstadoVotadaTestCase {
 	

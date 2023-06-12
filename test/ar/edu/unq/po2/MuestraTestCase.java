@@ -7,7 +7,8 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.StateMuestra.EstadoVotada;
+import ar.edu.unq.po2.State.Muestra.EstadoVotada;
+import ar.edu.unq.po2.State.Participante.Participante;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.StateMuestra;
+package ar.edu.unq.po2.State.Muestra;
 
 import ar.edu.unq.po2.ENivelDeVerificacion;
 import ar.edu.unq.po2.Muestra;

@@ -2,6 +2,8 @@ package ar.edu.unq.po2;
 
 import java.time.LocalDate;
 
+import ar.edu.unq.po2.State.Participante.Participante;
+
 public class Opinion {
 	
 	private TipoDeOpinion tipoDeOpinion;

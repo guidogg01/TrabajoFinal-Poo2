@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.State.Participante.Participante;
+
 class OpinionTestCase {
 	
 	private Opinion opinion;

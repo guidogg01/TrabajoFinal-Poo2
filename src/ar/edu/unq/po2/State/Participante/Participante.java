@@ -1,8 +1,14 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.State.Participante;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import ar.edu.unq.po2.Muestra;
+import ar.edu.unq.po2.Opinion;
+import ar.edu.unq.po2.Pagina;
+import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
 
 public class Participante {
 	
@@ -87,5 +93,15 @@ public class Participante {
 		
 	}
 
+	public String obtenerNivelDeConocimiento() {
+		return this.getNivelDeConocimiento().nivelDeConocimiento();
+	}
+
+	public boolean realizoMuestrasEnElUltimoMes(int cantMuestras) {
+		int cantMuestrasObtenidas = this.getMuestras()
+				                        .stream()
+				                        .filter(m -> (LocalDate.now() - m.getFechaDeCreacion()) < 30).size();
+		return false;
+	}
 
 }

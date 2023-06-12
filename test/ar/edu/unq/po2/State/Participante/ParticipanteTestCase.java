@@ -1,4 +1,4 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.State.Participante;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -6,6 +6,13 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import ar.edu.unq.po2.Opinion;
+import ar.edu.unq.po2.Pagina;
+import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
+import ar.edu.unq.po2.State.Participante.NivelBasico;
+import ar.edu.unq.po2.State.Participante.Participante;
 
 class ParticipanteTestCase {
 	
@@ -71,5 +78,9 @@ class ParticipanteTestCase {
 		assertTrue(this.participante.getOpiniones().contains(this.opinion));
 	}
 	
+	@Test
+	void verificacionDeObtencionDeUnNivelDeConocimientoDeUnParticipante() {
+		assertEquals("Soy un participante de nivel basico.", this.participante.obtenerNivelDeConocimiento());
+	}
 
 }
