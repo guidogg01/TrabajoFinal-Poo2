@@ -1,7 +1,6 @@
 package ar.edu.unq.po2.State.Participante;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,14 +109,10 @@ public class Participante {
 		return this.getNivelDeConocimiento().nivelDeConocimiento();
 	}
 
-	public boolean realizoMuestrasEnElUltimoMes(int cantMuestras) {
-		LocalDate fechaInicio = LocalDate.now().minusMonths(1);
-		
+	public boolean realizoMuestrasEnElUltimoMes(int cantMuestras) {		
 		int cantMuestrasObtenidas = this.getMuestras()
 				                        .stream()
-				                        // .filter(m -> LocalDate.now().compareTo(m.getFechaDeCreacion()) <= 30)
-				                        // .filter(m -> ChronoUnit.DAYS.between(LocalDate.now(), m.getFechaDeCreacion())  <= 30 )
-				                        .filter(m -> m.getFechaDeCreacion().isAfter(fechaInicio) || m.getFechaDeCreacion().isEqual(fechaInicio))
+				                        .filter(m -> LocalDate.now().compareTo(m.getFechaDeCreacion()) <= 30)
 										.toList()
 										.size();
 		

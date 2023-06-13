@@ -88,7 +88,7 @@ class ParticipanteTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoUnParticipanteAgregaUnaMuestra() {
+	void verificacionCuandoUnParticipanteAgregaUnaOpinion() {
 		//Exercise
 		this.participante.agregarOpinion(this.opinion);
 		
@@ -109,7 +109,18 @@ class ParticipanteTestCase {
 		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCAINFESTANS, ubicacion, LocalDate.of(2021, 6, 12));
 		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCASORDIDA, ubicacion, LocalDate.of(2023, 6, 2));
 		
-		assertTrue(this.participante.realizoMuestrasEnElUltimoMes(1));		
+		assertTrue(this.participante.realizoMuestrasEnElUltimoMes(3));		
+	}
+	
+	@Test
+	void verficiacionDeCuantasMuestrasNoRealizoElParticipanteEnLosUltimos30Dias() {
+		//setUp
+		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCAGUASAYANA, ubicacion, LocalDate.of(2023, 6, 12));
+		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCASORDIDA, ubicacion, LocalDate.of(2023, 5, 22));
+		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCAINFESTANS, ubicacion, LocalDate.of(2021, 6, 12));
+		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCASORDIDA, ubicacion, LocalDate.of(2023, 6, 2));
+		
+		assertFalse(this.participante.realizoMuestrasEnElUltimoMes(6));		
 	}
 	
 	@Test
@@ -120,7 +131,18 @@ class ParticipanteTestCase {
 		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCAINFESTANS, ubicacion, LocalDate.of(2023, 6, 12));
 		this.participante.opinarSobre(this.muestra3, TipoDeOpinion.PHTIACHINCHE, LocalDate.of(2023, 6, 12));
 		
-		assertTrue(this.participante.realizoOpinionesEnElUltimoMes(2)); 
+		assertTrue(this.participante.realizoOpinionesEnElUltimoMes(3)); 
+	}
+	
+	@Test
+	void verficiacionDeCuantasOpinionesNoRealizoElParticipanteEnLosUltimos30Dias() {
+		//setUp
+		this.participante.opinarSobre(this.muestra, TipoDeOpinion.CHINCHEFOLIADA, LocalDate.of(2023, 6, 12));
+		this.participante.opinarSobre(this.muestra2, TipoDeOpinion.PHTIACHINCHE, LocalDate.of(2021, 6, 12));
+		this.participante.enviarMuestra(TipoDeOpinion.VINCHUCAINFESTANS, ubicacion, LocalDate.of(2023, 6, 12));
+		this.participante.opinarSobre(this.muestra3, TipoDeOpinion.PHTIACHINCHE, LocalDate.of(2023, 6, 12));
+		
+		assertFalse(this.participante.realizoOpinionesEnElUltimoMes(5)); 
 	}
 	
 	@Test

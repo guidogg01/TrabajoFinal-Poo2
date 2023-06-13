@@ -13,7 +13,6 @@ import ar.edu.unq.po2.State.Participante.Participante;
 class OpinionTestCase {
 	
 	private Opinion opinion;
-	private Opinion opinion2;
 	
 	private Participante participante;
 	private Participante participante2;
@@ -24,7 +23,6 @@ class OpinionTestCase {
 		participante = mock(Participante.class);
 
 		opinion  = new Opinion(TipoDeOpinion.CHINCHEFOLIADA, participante, LocalDate.of(2020, 4, 15));
-		opinion2 = new Opinion(TipoDeOpinion.CHINCHEFOLIADA, participante2, LocalDate.of(2020, 6, 12));
 		
 	}
 
@@ -50,6 +48,24 @@ class OpinionTestCase {
 		when(participante.esExperto()).thenReturn(true);
 		
 		assertTrue(opinion.esOpinadaPorExperto());
+	}
+	
+	@Test
+	void verificacionCuandoUnaOpinionNoEsOpinadaPorExperto() {
+		// Mockeando el participante
+		when(participante.esExperto()).thenReturn(false);
+		
+		assertFalse(opinion.esOpinadaPorExperto());
+	}
+	
+	@Test
+	void verificacionCuandoUnaOpinionFueCreadaPorElParticipante() {
+		assertTrue(this.opinion.fueCreadaPor(this.participante));
+	}
+	
+	@Test
+	void verificacionCuandoUnaOpinionNoFueCreadaPorElParticipante() {
+		assertFalse(this.opinion.fueCreadaPor(this.participante2));
 	}
 
 }
