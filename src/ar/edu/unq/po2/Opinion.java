@@ -10,11 +10,11 @@ public class Opinion {
 	private Participante  opinador;
 	private LocalDate     fechaDeCreacion;
 	
-	Opinion(TipoDeOpinion tipoDeOpinion, Participante opinador, LocalDate fechaDeCreacion) {
+	public Opinion(TipoDeOpinion tipoDeOpinion, Participante opinador, LocalDate fechaDeCreacion) {
 		super();
 		this.setTipoDeOpinion(tipoDeOpinion);
 		this.setOpinador(opinador);
-		this.setFechaDeCreacion(fechaDeCreacion);
+		this.setFechaDeCreacion(fechaDeCreacion); 
 	}
 
 	public TipoDeOpinion getTipoDeOpinion() {
@@ -52,6 +52,10 @@ public class Opinion {
 
 	public boolean esOpinadaPorExperto() {
 		return this.getOpinador().esExperto();
+	}
+
+	public boolean fueCreadaPor(Participante participante) {//TESTEAR
+		return this.getOpinador().equals(participante);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package ar.edu.unq.po2.State.Participante;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class Participante {
 	private List<Muestra> muestras;
 	private List<Opinion> opiniones;
 	private NivelDeConocimiento nivelDeConocimiento;
+	private boolean tieneVerificacionExterna;
 	
 	public Participante(int id, Pagina pagina) {
 		super();
@@ -25,6 +27,7 @@ public class Participante {
 		this.setMuestras(new ArrayList<Muestra>());
 		this.setOpiniones(new ArrayList<Opinion>());
 		this.setNivelDeConocimiento(new NivelBasico(this));
+		this.setTieneVerificacionExterna(false);
 	}
 
 	public int getID() {
@@ -66,12 +69,24 @@ public class Participante {
 	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
 		this.nivelDeConocimiento = nivelDeConocimiento;
 	}
+	
+	public boolean isTieneVerificacionExterna() {
+		return tieneVerificacionExterna;
+	}
+
+	private void setTieneVerificacionExterna(boolean tieneVerificacionExterna) {
+		this.tieneVerificacionExterna = tieneVerificacionExterna;
+	}
+	
+	public void otorgarVerificacionExterna() {
+		this.setTieneVerificacionExterna(true);
+	}
 
 	public boolean esExperto() {
 		return this.getNivelDeConocimiento().esExperto();
 	}
 	
-	private void agregarMuestra(Muestra muestra) {
+	public void agregarMuestra(Muestra muestra) {
 		this.getMuestras().add(muestra);
 	}
 	
@@ -79,18 +94,16 @@ public class Participante {
 		this.getOpiniones().add(opinion);
 	}
 	
-	public void enviarMuestra(TipoDeOpinion tipoDeVinchuca, Ubicacion ubicacion) {
-		Muestra muestraAEnviar = new Muestra(tipoDeVinchuca, this, ubicacion, LocalDate.now());
+	public void enviarMuestra(TipoDeOpinion tipoDeVinchuca, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
+		Muestra muestraAEnviar = new Muestra(tipoDeVinchuca, this, ubicacion, fechaDeCreacion);
 		
 		this.getPagina().agregarMuestra(muestraAEnviar);
 		
 		this.agregarMuestra(muestraAEnviar);		
 	}
 	
-	public void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion) {
-		
-		this.getNivelDeConocimiento().opinarSobre(muestra, tipoDeOpinion);
-		
+	public void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion, LocalDate fechaDeCreacion) {
+		this.getNivelDeConocimiento().opinarSobre(muestra, tipoDeOpinion, fechaDeCreacion);
 	}
 
 	public String obtenerNivelDeConocimiento() {
@@ -98,10 +111,42 @@ public class Participante {
 	}
 
 	public boolean realizoMuestrasEnElUltimoMes(int cantMuestras) {
+		LocalDate fechaInicio = LocalDate.now().minusMonths(1);
+		
 		int cantMuestrasObtenidas = this.getMuestras()
 				                        .stream()
-				                        .filter(m -> (LocalDate.now() - m.getFechaDeCreacion()) < 30).size();
-		return false;
+				                        // .filter(m -> LocalDate.now().compareTo(m.getFechaDeCreacion()) <= 30)
+				                        // .filter(m -> ChronoUnit.DAYS.between(LocalDate.now(), m.getFechaDeCreacion())  <= 30 )
+				                        .filter(m -> m.getFechaDeCreacion().isAfter(fechaInicio) || m.getFechaDeCreacion().isEqual(fechaInicio))
+										.toList()
+										.size();
+		
+		return cantMuestrasObtenidas >= cantMuestras;
+	}
+
+	public boolean realizoOpinionesEnElUltimoMes(int cantOpiniones) {
+		int cantOpinionesObtenidas = this.getOpiniones()
+                						 .stream()
+                						 .filter(o -> LocalDate.now().compareTo(o.getFechaDeCreacion()) <= 30)
+                						 .toList()
+                						 .size();
+		
+		return cantOpinionesObtenidas >= cantOpiniones;
+	}
+
+	public boolean tieneVerificacionExterna() {
+		// Se crea el mensaje tieneVerificacionExterna para generar abstraccion.
+		return this.isTieneVerificacionExterna();
+	}
+
+	public boolean esMiMuestra(Muestra muestra) {
+		return this.getMuestras()
+				   .stream()
+				   .anyMatch(m -> m.equals(muestra));
+	}
+
+	public boolean opineSobre(Muestra muestra) {
+		return muestra.elParticipanteYaOpino(this);
 	}
 
 }

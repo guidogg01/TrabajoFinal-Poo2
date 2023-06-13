@@ -205,8 +205,19 @@ public class Muestra {
         return elementoMasRepetido;
 	}
 	
-	private boolean esVotadaPorExpertos() {
+	public boolean esVotadaPorExpertos() {
 		return this.getParticipante().esExperto() || this.getOpiniones().stream().anyMatch(o -> o.esOpinadaPorExperto());
+	}
+
+	public boolean esVerificada() {
+		// Se crea en mensaje esVerificada debido a que genera una mayor abstracción.
+		return this.coincidieronExpertos();
+	}
+
+	public boolean elParticipanteYaOpino(Participante participante) {
+		return this.getOpiniones()
+				   .stream()
+				   .anyMatch(o -> o.fueCreadaPor(participante));
 	}
 	
 }

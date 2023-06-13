@@ -1,5 +1,7 @@
 package ar.edu.unq.po2.State.Participante;
 
+import java.time.LocalDate;
+
 import ar.edu.unq.po2.Muestra;
 import ar.edu.unq.po2.TipoDeOpinion;
 
@@ -25,7 +27,7 @@ public abstract class NivelDeConocimiento {
 		return true;
 	}
 
-	public abstract void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion);
+	public abstract void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion, LocalDate fechaDeCreacion);
 
 	public abstract String nivelDeConocimiento();
 
@@ -33,6 +35,10 @@ public abstract class NivelDeConocimiento {
 		return (this.getParticipante().realizoMuestrasEnElUltimoMes(cantMuestras))
 			    &&
 			   (this.getParticipante().realizoOpinionesEnElUltimoMes(cantOpiniones));
+	}
+
+	public boolean tieneVerificacionExterna() {
+		return this.getParticipante().tieneVerificacionExterna();
 	}
 	
 }

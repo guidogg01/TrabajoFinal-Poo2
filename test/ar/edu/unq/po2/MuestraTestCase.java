@@ -276,4 +276,48 @@ class MuestraTestCase {
 		assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual());
 	}
 	
+	@Test
+	void vericifacionSiUnaMuestraEsVotadaPorExpertos() {
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
+		
+		//Mockeando las opiniones
+		when(opinion.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
+		when(opinion3.esOpinadaPorExperto()).thenReturn(false);
+		
+		assertTrue(this.muestra1.esVotadaPorExpertos());
+	}
+	
+	@Test
+	void verificacionSiUnaMuestraEsVerificada() {
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
+		
+		//Mockeando las opiniones
+		when(opinion.esOpinadaPorExperto()).thenReturn(true);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
+		
+		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
+		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
+		
+		assertTrue(this.muestra1.esVerificada());
+	}
+	
+	@Test
+	void verificacionCuandoUnParticipanteYaOpinoSobreUnaMuestra() {
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		
+		//Mockeando la opinion
+		when(opinion.fueCreadaPor(participante1)).thenReturn(true);
+		
+		assertTrue(this.muestra1.elParticipanteYaOpino(this.participante1));
+	}
+	
 }
