@@ -29,7 +29,6 @@ public class Opinion {
 		this.tipoDeOpinion = tipoDeOpinion;
 	}
 
-
 	public Participante getOpinador() {
 		return opinador;
 	}
@@ -54,7 +53,7 @@ public class Opinion {
 		return this.getOpinador().esExperto();
 	}
 
-	public boolean fueCreadaPor(Participante participante) {//TESTEAR
+	public boolean fueCreadaPor(Participante participante) {
 		return this.getOpinador().equals(participante);
 	}
 	

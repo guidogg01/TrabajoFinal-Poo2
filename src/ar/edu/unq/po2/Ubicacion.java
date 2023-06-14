@@ -4,39 +4,39 @@ import java.util.List;
 
 public class Ubicacion {
 
-	private Double longitud;
-	private Double latitud;
+	private double longitud;
+	private double latitud;
 	
-	public Ubicacion(Double longitud, Double latitud) {
+	public Ubicacion(double longitud, double latitud) {
 		super();
 		this.setLongitud(longitud);
 		this.setLatitud(latitud);
 	}
 
-	public Double getLongitud() {
+	public double getLongitud() {
 		return longitud;
 	}
 
-	private void setLongitud(Double longitud) {
+	private void setLongitud(double longitud) {
 		this.longitud = longitud;
 	}
 
-	public Double getLatitud() {
+	public double getLatitud() {
 		return latitud;
 	}
 
-	private void setLatitud(Double latitud) {
+	private void setLatitud(double latitud) {
 		this.latitud = latitud;
 	}
 	
-	public Double distanciaCon(Ubicacion ubicacion) {
-		Double distanciaLongitud = Math.abs(this.longitud - ubicacion.getLongitud());
-		Double distanciaLatitud  = Math.abs(this.latitud - ubicacion.getLatitud());
+	public double distanciaCon(Ubicacion ubicacion) {
+		double distanciaLongitud = Math.abs(this.longitud - ubicacion.getLongitud());
+		double distanciaLatitud  = Math.abs(this.latitud - ubicacion.getLatitud());
 		return distanciaLongitud + distanciaLatitud;
 	}
 
 	//Que la distanciaMaxima sea un Double que representa una cantidad de kilómetros...
-	public List<Ubicacion> ubicacionesCercanasA(Double distanciaMaxima, List<Ubicacion> ubicacionesAComparar) {
+	public List<Ubicacion> ubicacionesCercanasA(double distanciaMaxima, List<Ubicacion> ubicacionesAComparar) {
 		return ubicacionesAComparar.stream()
 				                   .filter(u -> u.distanciaCon(this) <= distanciaMaxima)
 				                   .toList();

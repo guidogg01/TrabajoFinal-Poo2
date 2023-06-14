@@ -54,15 +54,15 @@ public class ZonaDeCobertura extends Subject {
 	}
 	
 
-	public Double radio() {
+	public double radio() {
 		return this.getEpicentro().distanciaCon(this.getBorde());
 	}
 
-	public Double distancia() {
+	public double distancia() {
 		return this.diametro()*Math.PI;
 	}
 	
-	private Double diametro() {
+	private double diametro() {
 		return this.radio()*2;
 	}
 

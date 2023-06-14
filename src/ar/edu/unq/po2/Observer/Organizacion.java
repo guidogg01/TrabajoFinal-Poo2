@@ -57,7 +57,7 @@ public class Organizacion implements IZonaDeCoberturaListeners {
 		return funcionalidadExterna;
 	}
 
-	public void setFuncionalidadExterna(FuncionalidadExterna funcionalidadExterna) {
+	private void setFuncionalidadExterna(FuncionalidadExterna funcionalidadExterna) {
 		this.funcionalidadExterna = funcionalidadExterna;
 	}
 
