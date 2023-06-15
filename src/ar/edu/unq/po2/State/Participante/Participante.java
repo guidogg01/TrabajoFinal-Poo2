@@ -79,6 +79,7 @@ public class Participante {
 	
 	public void otorgarVerificacionExterna() {
 		this.setTieneVerificacionExterna(true);
+		this.setNivelDeConocimiento(new NivelExpertoVerificado(this));
 	}
 
 	public boolean esExperto() {
