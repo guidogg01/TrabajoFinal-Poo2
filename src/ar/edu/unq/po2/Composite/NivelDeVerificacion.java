@@ -10,8 +10,6 @@ public class NivelDeVerificacion implements IFiltro {
 	private ENivelDeVerificacion nivelDeVerificacionAFiltrar;
 
 	public NivelDeVerificacion(ENivelDeVerificacion nivelDeVerificacionAFiltrar) {
-		// en caso de ser nivelDeVerificacionAFiltrar igual a true, entonces se deben filtrar por aquellas muestras que si estan verificadas,
-		// en caso de ser nivelDeVerificacionAFiltrar igual a false, entonces se deben filtar por aquellas muestras que son votadas.
 		super();
 		this.setNivelDeVerificacionAFiltrar(nivelDeVerificacionAFiltrar);
 	}
