@@ -6,9 +6,9 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.Muestra;
 import ar.edu.unq.po2.Observer.IZonaDeCoberturaListeners;
 import ar.edu.unq.po2.Observer.Subject;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 class SubjectTestCase {
 	

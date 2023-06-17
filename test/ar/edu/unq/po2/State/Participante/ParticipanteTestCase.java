@@ -9,11 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import ar.edu.unq.po2.Muestra;
 import ar.edu.unq.po2.Opinion;
 import ar.edu.unq.po2.Pagina;
 import ar.edu.unq.po2.TipoDeOpinion;
 import ar.edu.unq.po2.Ubicacion;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 class ParticipanteTestCase {
 	

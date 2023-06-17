@@ -1,7 +1,8 @@
 package ar.edu.unq.po2.State.Muestra;
 
 import ar.edu.unq.po2.ENivelDeVerificacion;
-import ar.edu.unq.po2.Muestra;
+import ar.edu.unq.po2.Opinion;
+import ar.edu.unq.po2.TipoDeOpinion;
 
 public abstract class EstadoDeMuestra {
 	
@@ -20,10 +21,10 @@ public abstract class EstadoDeMuestra {
 		this.miMuestra = miMuestra;
 	}
 	
-	public boolean fueVerificada() {
-		return this.getMiMuestra().coincidieronExpertos();
-	}
-	
 	public abstract ENivelDeVerificacion nivelDeVerificacion();
+
+	public abstract void agregarOpinion(Opinion opinion);
+
+	public abstract TipoDeOpinion resultadoActual();
 
 }

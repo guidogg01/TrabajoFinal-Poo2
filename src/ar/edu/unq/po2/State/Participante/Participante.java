@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.unq.po2.Muestra;
 import ar.edu.unq.po2.Opinion;
 import ar.edu.unq.po2.Pagina;
 import ar.edu.unq.po2.TipoDeOpinion;
 import ar.edu.unq.po2.Ubicacion;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 public class Participante {
 	
@@ -79,6 +79,7 @@ public class Participante {
 	
 	public void otorgarVerificacionExterna() {
 		this.setTieneVerificacionExterna(true);
+		this.setNivelDeConocimiento(new NivelExpertoVerificado(this));
 	}
 
 	public boolean esExperto() {

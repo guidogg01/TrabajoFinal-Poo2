@@ -1,4 +1,4 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.State.Muestra;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +7,10 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.State.Muestra.EstadoVotada;
+import ar.edu.unq.po2.ENivelDeVerificacion;
+import ar.edu.unq.po2.Opinion;
+import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
 import ar.edu.unq.po2.State.Participante.Participante;
 
 import java.time.LocalDate;
@@ -27,7 +30,8 @@ class MuestraTestCase {
 	private Opinion   	 opinion2;
 	private Opinion   	 opinion3;
 	
-	private EstadoVotada estadoVotada;
+	private EstadoVotadaBasicos  estadoVotadaBasicos;
+	private EstadoVotadaExpertos estadoVotadaExpertos;
 	
 	
 	@BeforeEach
@@ -43,11 +47,15 @@ class MuestraTestCase {
 		opinion2      = mock(Opinion.class);
 		opinion3      = mock(Opinion.class);
 		
-		estadoVotada  = new EstadoVotada(muestra1); // no se realiza con mockito debido a que no se podía testear las funcionalidades necesarias.
+		estadoVotadaBasicos   = new EstadoVotadaBasicos(muestra1); // no se realiza con mockito debido a que no se podía testear las funcionalidades necesarias.
+		estadoVotadaExpertos  = new EstadoVotadaExpertos(muestra2); // no se realiza con mockito debido a que no se podía testear las funcionalidades necesarias.
 		
-		//Mockeando el participante
+		//Mockeando los participantes
 		// Se mockea el id del participante debido a que aquí es en donde se inicializa la muestra y donde se le pide el id al participante.
 		when(participante2.getID()).thenReturn(10);
+		when(participante2.esExperto()).thenReturn(false);
+		when(participante1.getID()).thenReturn(5);
+		when(participante1.esExperto()).thenReturn(true);
 		
 		muestra1   = new Muestra(TipoDeOpinion.VINCHUCASORDIDA,   participante2, ubicacion1, LocalDate.now());
 		muestra2   = new Muestra(TipoDeOpinion.VINCHUCAGUASAYANA, participante1, ubicacion2, LocalDate.now());
@@ -55,7 +63,7 @@ class MuestraTestCase {
 	}
 	
 	@Test
-	void verificacionDeInicializacionDeUnaMuestra() {
+	void verificacionDeInicializacionDeUnaMuestraRealizadaPorParticipanteBasico() {
 		//SetUp
 		TipoDeOpinion tipoDeVinchucaFotografiadaEsperado = TipoDeOpinion.VINCHUCASORDIDA;
 		String fotoEsperada = "Soy una vinchuca Sordida";
@@ -72,7 +80,28 @@ class MuestraTestCase {
 		assertEquals(latitudEsperadaDeLaUbicacion, this.muestra1.getUbicacion().getLatitud());
 		assertEquals(LocalDate.now(), this.muestra1.getFechaDeCreacion());
 		assertTrue(this.muestra1.getOpiniones().isEmpty());
-		assertEquals(this.estadoVotada.getClass(), this.muestra1.getEstadoActual().getClass());
+		assertEquals(this.estadoVotadaBasicos.getClass(), this.muestra1.getEstadoActual().getClass());
+	}
+	
+	@Test
+	void verificacionDeInicializacionDeUnaMuestraRealizadaPorParticipanteExperto() {
+		//SetUp
+		TipoDeOpinion tipoDeVinchucaFotografiadaEsperado = TipoDeOpinion.VINCHUCAGUASAYANA;
+		String fotoEsperada = "Soy una vinchuca Guasayana";
+		int    idDeParticipanteEsperado = 5;
+		Double latitudEsperadaDeLaUbicacion = 2d;
+		
+		//Mockeando la ubicacion
+		when(ubicacion2.getLatitud()).thenReturn(2d);
+		
+		assertEquals(tipoDeVinchucaFotografiadaEsperado, this.muestra2.getTipoDeVinchucaFotografiada());
+		assertEquals(fotoEsperada, this.muestra2.getFoto());
+		assertEquals(this.participante1, this.muestra2.getParticipante());
+		assertEquals(idDeParticipanteEsperado, this.muestra2.getIdDeParticipante());
+		assertEquals(latitudEsperadaDeLaUbicacion, this.muestra2.getUbicacion().getLatitud());
+		assertEquals(LocalDate.now(), this.muestra2.getFechaDeCreacion());
+		assertTrue(this.muestra2.getOpiniones().isEmpty());
+		assertEquals(this.estadoVotadaExpertos.getClass(), this.muestra2.getEstadoActual().getClass());
 	}
 	
 	@Test
@@ -83,9 +112,9 @@ class MuestraTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoSeAgregaUnaNuevaOpinionAUnaMuestra() {
+	void verificacionCuandoSeRealizaUnAddOpinionAUnaMuestra() {
 		//Exersice
-		this.muestra1.agregarOpinion(this.opinion);
+		this.muestra1.addOpinion(this.opinion);
 		
 		assertFalse(this.muestra1.getOpiniones().isEmpty());
 	}
@@ -115,75 +144,73 @@ class MuestraTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoSeCreaUnaMuestraSuEstadoEsVotada() {
-		assertEquals(ENivelDeVerificacion.VOTADA, this.muestra1.obtenerNivelDeVerificacion());
+	void verificacionCuandoSeCreaUnaMuestraPorUnParticipanteBasicoSuNivelDeVerificacionCorrespondeAlNivelDelMismo() {
+		assertEquals(ENivelDeVerificacion.VOTADABASICOS, this.muestra1.obtenerNivelDeVerificacion());
+	}
+	
+	@Test
+	void verificacionCuandoSeCreaUnaMuestraPorUnParticipanteExpertcoSuNivelDeVerificacionCorrespondeAlNivelDelMismo() {
+		assertEquals(ENivelDeVerificacion.VOTADAEXPERTOS, this.muestra2.obtenerNivelDeVerificacion());
 	}
 	
 	@Test
 	void verificacionCuandoElEstadoDeUnaMuestraEsVerificada() {
+		//Mockeando las opiniones
+		when(opinion.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
+		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
+		
 		//SetUp
 		this.muestra1.agregarOpinion(opinion);
 		this.muestra1.agregarOpinion(opinion2);
 		this.muestra1.agregarOpinion(opinion3);
 		
-		//Mockeando las opiniones
-		when(opinion.esOpinadaPorExperto()).thenReturn(true);
-		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
-		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
 		
-		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
+		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
 		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		
-		//Mockeando el participante
-		when(participante1.esExperto()).thenReturn(false);
 		
 		assertEquals(ENivelDeVerificacion.VERIFICADA, this.muestra1.obtenerNivelDeVerificacion());
 	}
 	
 	@Test
 	void verificacionCuandoEnUnaMuestraCoincidieronExpertos() {
+		//Mockeando las opiniones
+		when(opinion.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
+		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
+				
 		//SetUp
 		this.muestra1.agregarOpinion(opinion);
 		this.muestra1.agregarOpinion(opinion2);
 		this.muestra1.agregarOpinion(opinion3);
-		
-		//Mockeando las opiniones
-		when(opinion.esOpinadaPorExperto()).thenReturn(true);
-		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
-		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
-		
-		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
+				
+				
+		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
 		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
 		
 		assertTrue(this.muestra1.coincidieronExpertos());
 	}
 	
 	@Test
-	void verificacionDelResultadoActualCuandoSeCreaUnaMuestraEsSuTipoDeOpinion() {
-		//Mockeando al participante
-		when(participante2.esExperto()).thenReturn(false);
-		
+	void verificacionDelResultadoActualCuandoSeCreaUnaMuestraEsSuTipoDeOpinion() {		
 		assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual());
 	}
 	
 	@Test
 	void verificacionDelResultadoActualDeUnaMuestraDeSoloParticipantesBasicos() {
-		//SetUp
-		this.muestra1.agregarOpinion(opinion);
-		this.muestra1.agregarOpinion(opinion2);
-		this.muestra1.agregarOpinion(opinion3);
-		
 		//Mockeando las opiniones
 		when(opinion.esOpinadaPorExperto()).thenReturn(false);
 		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
 		when(opinion3.esOpinadaPorExperto()).thenReturn(false);
 		
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
+		
 		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
 		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.IMAGENPOCOCLARA);
 		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		
-		//Mockeando al participante
-		when(participante2.esExperto()).thenReturn(false);
 		
 		assertEquals(TipoDeOpinion.PHTIACHINCHE, this.muestra1.resultadoActual());
 		
@@ -191,43 +218,41 @@ class MuestraTestCase {
 	
 	@Test
 	void verificacionDelResultadoActualDeUnaMuestraDeSoloParticipantesExpertos() {
-		//SetUp
-		this.muestra1.agregarOpinion(opinion);
-		this.muestra1.agregarOpinion(opinion2);
-		this.muestra1.agregarOpinion(opinion3);
-		
 		//Mockeando las opiniones
 		when(opinion.esOpinadaPorExperto()).thenReturn(true);
 		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
 		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
 		
-		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.VINCHUCASORDIDA);
-		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.IMAGENPOCOCLARA);
-		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		
-		when(participante2.esExperto()).thenReturn(true);
-		
-		assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual());
-		
-	}
-	
-	@Test
-	void verificacionDelResultadoActualNoDefinidoDeUnaMuestra() {
 		//SetUp
 		this.muestra1.agregarOpinion(opinion);
 		this.muestra1.agregarOpinion(opinion2);
 		this.muestra1.agregarOpinion(opinion3);
 		
+		
+		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.VINCHUCASORDIDA);
+		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.IMAGENPOCOCLARA);
+		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
+		
+		assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra2.resultadoActual());
+		
+	}
+	
+	@Test
+	void verificacionDelResultadoActualNoDefinidoDeUnaMuestra() {
 		//Mockeando las opiniones
-		when(opinion.esOpinadaPorExperto()).thenReturn(true);
-		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
 		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
 		
-		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
-		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
 		
-		when(participante2.esExperto()).thenReturn(false);
+		
+		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
+		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
+		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
 		
 		assertEquals(TipoDeOpinion.NODEFINIDO, this.muestra1.resultadoActual());
 		
@@ -235,23 +260,22 @@ class MuestraTestCase {
 	
 	@Test
 	void verificacionDelResultadoActualNoDefinidoDeUnaMuestraConMasOpiniones() {
-		//SetUp
-		this.muestra1.agregarOpinion(opinion);
-		this.muestra1.agregarOpinion(opinion2);
-		this.muestra1.agregarOpinion(opinion3);
-		
 		//Mockeando las opiniones
 		when(opinion.esOpinadaPorExperto()).thenReturn(true);
 		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
 		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
 		
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
+		
+		
 		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.VINCHUCASORDIDA);
+		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.VINCHUCAGUASAYANA);
 		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
 		
-		when(participante2.esExperto()).thenReturn(true);
-		
-		assertEquals(TipoDeOpinion.NODEFINIDO, this.muestra1.resultadoActual());
+		assertEquals(TipoDeOpinion.NODEFINIDO, this.muestra2.resultadoActual());
 		
 	}
 	

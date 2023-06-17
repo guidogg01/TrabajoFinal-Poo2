@@ -3,8 +3,8 @@ package ar.edu.unq.po2.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.unq.po2.Muestra;
 import ar.edu.unq.po2.Ubicacion;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 public class ZonaDeCobertura extends Subject {
 

@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.Observer.ONG;
-
 class ENivelDeVerificacionTestCase {
 
 	@Test
@@ -18,10 +16,19 @@ class ENivelDeVerificacionTestCase {
 	}
 	
 	@Test
-	void verificacionDeInicializacionDeUnNivelDeVerificacionVotada() {
+	void verificacionDeInicializacionDeUnNivelDeVerificacionVotadaBasicos() {
 		
-		ENivelDeVerificacion nivelDeVerificacion = ENivelDeVerificacion.VOTADA;
-		ENivelDeVerificacion nivelDeVerificacionEsperada = ENivelDeVerificacion.VOTADA;
+		ENivelDeVerificacion nivelDeVerificacion = ENivelDeVerificacion.VOTADABASICOS;
+		ENivelDeVerificacion nivelDeVerificacionEsperada = ENivelDeVerificacion.VOTADABASICOS;
+		
+		assertEquals(nivelDeVerificacionEsperada, nivelDeVerificacion);
+	}
+	
+	@Test
+	void verificacionDeInicializacionDeUnNivelDeVerificacionVotadaExpertos() {
+		
+		ENivelDeVerificacion nivelDeVerificacion = ENivelDeVerificacion.VOTADAEXPERTOS;
+		ENivelDeVerificacion nivelDeVerificacionEsperada = ENivelDeVerificacion.VOTADAEXPERTOS;
 		
 		assertEquals(nivelDeVerificacionEsperada, nivelDeVerificacion);
 	}

@@ -1,9 +1,10 @@
 package ar.edu.unq.po2.Composite;
 
 import java.util.List;
-import java.util.ArrayList;
 
-import ar.edu.unq.po2.Muestra;
+import ar.edu.unq.po2.State.Muestra.Muestra;
+
+import java.util.ArrayList;
 
 public class OR implements Busqueda {
 	

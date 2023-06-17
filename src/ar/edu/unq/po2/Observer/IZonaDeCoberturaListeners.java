@@ -1,6 +1,6 @@
 package ar.edu.unq.po2.Observer;
 
-import ar.edu.unq.po2.Muestra;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 public interface IZonaDeCoberturaListeners {
 	

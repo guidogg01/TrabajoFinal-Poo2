@@ -1,10 +1,12 @@
-package ar.edu.unq.po2;
+package ar.edu.unq.po2.State.Muestra;
 
 import java.util.List;
 import java.util.Map;
 
-import ar.edu.unq.po2.State.Muestra.EstadoDeMuestra;
-import ar.edu.unq.po2.State.Muestra.EstadoVotada;
+import ar.edu.unq.po2.ENivelDeVerificacion;
+import ar.edu.unq.po2.Opinion;
+import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
 import ar.edu.unq.po2.State.Participante.Participante;
 
 import java.util.HashMap;
@@ -31,7 +33,13 @@ public class Muestra {
 		this.setUbicacion(ubicacion);
 		this.setFechaDeCreacion(fechaDeCreacion);
 		this.setOpiniones(new ArrayList<Opinion>());
-		this.setEstadoActual(new EstadoVotada(this));
+		
+		//Se realiza de esta manera debido a que dependiendo del estado del Participante, se le settea el estado a la Muestra.
+		if (participante.esExperto()) {
+			this.setEstadoActual(new EstadoVotadaExpertos(this));
+		} else {
+			this.setEstadoActual(new EstadoVotadaBasicos(this));
+		}
 	}
 
 	public TipoDeOpinion getTipoDeVinchucaFotografiada() {
@@ -112,8 +120,8 @@ public class Muestra {
 			   (tipoDeOpinion.equals(TipoDeOpinion.VINCHUCAGUASAYANA));
 	}
 
-	public void agregarOpinion(Opinion opinion) {
-		this.getOpiniones().add(opinion);		
+	public void agregarOpinion(Opinion opinion) { //TESTEAR
+		this.getEstadoActual().agregarOpinion(opinion);		
 	}
 
 	public double distanciaConMuestra(Muestra muestra) {
@@ -130,18 +138,21 @@ public class Muestra {
 
 	public boolean coincidieronExpertos() {
 		// agarra todos los expertos que hayan votado, y se fija si hay al menos 2 que opinan lo mismo.		
-		return this.opinionesDeExpertos().stream()
+		return (this.opinionesDeExpertos().size() > 1)
+			   &&
+			   this.opinionesDeExpertos().stream()
 				                         .anyMatch(tipoDeOpinion1 -> this.opinionesDeExpertos()
 				                           .stream()
 				                	       .anyMatch(tipoDeOpinion2 -> tipoDeOpinion1.equals(tipoDeOpinion2)));
 	}
 	
-	public TipoDeOpinion resultadoActual() { 
-		TipoDeOpinion resultado = votoPorParticipantesBasicos();
-		if (esVotadaPorExpertos()) {
-			resultado = votoPorParticipantesExpertos();
-		}
-		return resultado;
+	public TipoDeOpinion resultadoActual() { //TESTEAR
+		return this.getEstadoActual().resultadoActual();
+//		TipoDeOpinion resultado = votoPorParticipantesBasicos();
+//		if (esVotadaPorExpertos()) {
+//			resultado = votoPorParticipantesExpertos();
+//		}
+//		return resultado;
 	} 
 	
 	private List<TipoDeOpinion> opinionesDeExpertos() {
@@ -176,11 +187,11 @@ public class Muestra {
 		return nuevaListaDeOpiniones;
 	}
 	
-	private TipoDeOpinion votoPorParticipantesBasicos() {
+	public TipoDeOpinion votoPorParticipantesBasicos() {
 		return this.encontrarTipoDeOpinionMasRepetido(this.opinionesDeBasicos());
 	}
 	
-	private TipoDeOpinion votoPorParticipantesExpertos() {
+	public TipoDeOpinion votoPorParticipantesExpertos() {
 		return this.encontrarTipoDeOpinionMasRepetido(this.opinionesDeExpertos());
 	}
 	
@@ -218,6 +229,10 @@ public class Muestra {
 		return this.getOpiniones()
 				   .stream()
 				   .anyMatch(o -> o.fueCreadaPor(participante));
+	}
+
+	public void addOpinion(Opinion opinion) { // TESTEAR
+		this.getOpiniones().add(opinion);
 	}
 	
 }

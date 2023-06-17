@@ -3,6 +3,7 @@ package ar.edu.unq.po2;
 import java.util.List;
 
 import ar.edu.unq.po2.Composite.Busqueda;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 import java.util.ArrayList;
 

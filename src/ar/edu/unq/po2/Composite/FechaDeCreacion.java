@@ -3,7 +3,7 @@ package ar.edu.unq.po2.Composite;
 import java.time.LocalDate;
 import java.util.List;
 
-import ar.edu.unq.po2.Muestra;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 public class FechaDeCreacion implements IFiltro {
 

@@ -2,8 +2,8 @@ package ar.edu.unq.po2.State.Participante;
 
 import java.time.LocalDate;
 
-import ar.edu.unq.po2.Muestra;
 import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.State.Muestra.Muestra;
 
 public abstract class NivelDeConocimiento {
 
