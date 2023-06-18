@@ -140,23 +140,18 @@ public class Muestra {
 		// agarra todos los expertos que hayan votado, y se fija si hay al menos 2 que opinan lo mismo.		
 		return (this.opinionesDeExpertos().size() > 1)
 			   &&
-			   this.opinionesDeExpertos().stream()
+			   (this.opinionesDeExpertos().stream()
 				                         .anyMatch(tipoDeOpinion1 -> this.opinionesDeExpertos()
 				                           .stream()
-				                	       .anyMatch(tipoDeOpinion2 -> tipoDeOpinion1.equals(tipoDeOpinion2)));
-	}
+				                	       .anyMatch(tipoDeOpinion2 -> tipoDeOpinion1.equals(tipoDeOpinion2))));
+	} 
 	
 	public TipoDeOpinion resultadoActual() { //TESTEAR
 		return this.getEstadoActual().resultadoActual();
-//		TipoDeOpinion resultado = votoPorParticipantesBasicos();
-//		if (esVotadaPorExpertos()) {
-//			resultado = votoPorParticipantesExpertos();
-//		}
-//		return resultado;
 	} 
 	
 	private List<TipoDeOpinion> opinionesDeExpertos() {
-		List<TipoDeOpinion> nuevaListaDeOpiniones = new ArrayList<>();
+		List<TipoDeOpinion> nuevaListaDeOpiniones = new ArrayList<TipoDeOpinion>();
 		
 		List<TipoDeOpinion> opinionesDeExpertos = this.getOpiniones().stream()
 				                                                     .filter(o -> o.esOpinadaPorExperto())
@@ -172,7 +167,7 @@ public class Muestra {
 	}
 	
 	private List<TipoDeOpinion> opinionesDeBasicos() {
-		List<TipoDeOpinion> nuevaListaDeOpiniones = new ArrayList<>();
+		List<TipoDeOpinion> nuevaListaDeOpiniones = new ArrayList<TipoDeOpinion>();
 		
 		List<TipoDeOpinion> opinionesDeBasicos = this.getOpiniones().stream()
 				                                                    .filter(o -> !o.esOpinadaPorExperto())
