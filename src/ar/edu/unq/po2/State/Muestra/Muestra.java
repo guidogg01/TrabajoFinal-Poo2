@@ -137,7 +137,7 @@ public class Muestra {
 	}
 
 	public boolean coincidieronExpertos() {
-		// agarra todos los expertos que hayan votado, y se fija si hay al menos 2 que opinan lo mismo.		
+		// agarra todos los expertos que hayan votado, se queda solo con los objetos que son distintos, y luego compara la cantidad de objetos, con el tamaño del array.		
 		return (this.opinionesDeExpertos().size() > 1)
 			    &&
 			   (this.opinionesDeExpertos().stream()
@@ -145,7 +145,7 @@ public class Muestra {
 		                                  .count() != this.opinionesDeExpertos().size());
 	}
 	
-	public TipoDeOpinion resultadoActual() { //TESTEAR
+	public TipoDeOpinion resultadoActual() {
 		return this.getEstadoActual().resultadoActual();
 	} 
 	
@@ -220,7 +220,7 @@ public class Muestra {
 				   .anyMatch(o -> o.fueCreadaPor(participante));
 	}
 
-	public void addOpinion(Opinion opinion) { // TESTEAR
+	public void addOpinion(Opinion opinion) {
 		this.getOpiniones().add(opinion);
 	}
 	

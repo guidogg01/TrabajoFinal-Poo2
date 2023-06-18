@@ -141,7 +141,7 @@ public class Participante {
 		return muestra.elParticipanteYaOpino(this);
 	}
 
-	public void agregarMuestraAPagina(Muestra muestraAEnviar) { //Testear
+	public void agregarMuestraAPagina(Muestra muestraAEnviar) {
 		this.getPagina().agregarMuestra(muestraAEnviar);		
 	}
 
