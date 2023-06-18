@@ -190,6 +190,24 @@ class MuestraTestCase {
 	}
 	
 	@Test
+	void verificacionCuandoEnUnaMuestraNoCoincidieronExpertos() {
+		//Mockeando las opiniones
+		when(opinion.esOpinadaPorExperto()).thenReturn(false);
+		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
+		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
+				
+		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
+		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
+		
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		this.muestra1.agregarOpinion(opinion3);
+				
+		assertFalse(this.muestra1.coincidieronExpertos());
+	}
+	
+	@Test
 	void verificacionDelResultadoActualCuandoSeCreaUnaMuestraEsSuTipoDeOpinion() {		
 		assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual());
 	}
@@ -227,8 +245,8 @@ class MuestraTestCase {
 		
 		//SetUp
 		this.muestra2.agregarOpinion(opinion);
-		this.muestra2.agregarOpinion(opinion2); //el problema esta acá de alguna manera se mete a EstadoVerificada y no deja agregar mas opiniones.
-		//this.muestra2.agregarOpinion(opinion3);
+		this.muestra2.agregarOpinion(opinion2);
+		this.muestra2.agregarOpinion(opinion3);
 		
 		assertEquals(TipoDeOpinion.VINCHUCAGUASAYANA, this.muestra2.resultadoActual());
 		
@@ -255,77 +273,39 @@ class MuestraTestCase {
 	}
 	
 	@Test
-	void verificacionDelResultadoActualNoDefinidoDeUnaMuestraConMasOpiniones() {
-		//Mockeando las opiniones
-		when(opinion.esOpinadaPorExperto()).thenReturn(true);
-		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
-		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
-		
-		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.VINCHUCAGUASAYANA);
-		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		
-		//SetUp
-		this.muestra2.agregarOpinion(opinion);
-		this.muestra2.agregarOpinion(opinion2);
-		this.muestra2.agregarOpinion(opinion3);
-		
-		assertEquals(TipoDeOpinion.NODEFINIDO, this.muestra2.resultadoActual());
-		
-	}
-	
-	@Test
-	void verificacionCuandoVotanParticipantesExpertosLasOpinionesDeLosParticipantesBasicosNoSonTenidosEnCuenta() {
-		//SetUp
-		this.muestra1.agregarOpinion(opinion);
-		this.muestra1.agregarOpinion(opinion2);
-		this.muestra1.agregarOpinion(opinion3);
-		
+	void verificacionCuandoOpinanParticipantesExpertosLasOpinionesDeLosParticipantesBasicosNoSeAgregan() {
 		//Mockeando las opiniones
 		when(opinion.esOpinadaPorExperto()).thenReturn(true);
 		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
 		when(opinion3.esOpinadaPorExperto()).thenReturn(false);
 		
-		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.VINCHUCASORDIDA);
+		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.CHINCHEFOLIADA);
 		when(opinion2.getTipoDeOpinion()).thenReturn(TipoDeOpinion.IMAGENPOCOCLARA);
 		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		
+
 		when(participante2.esExperto()).thenReturn(true);
 		
-		assertEquals(TipoDeOpinion.VINCHUCASORDIDA, this.muestra1.resultadoActual());
+		//SetUp
+		this.muestra1.agregarOpinion(opinion);
+		this.muestra1.agregarOpinion(opinion2);
+		
+		assertThrows(IllegalArgumentException.class, () -> {
+			this.muestra1.agregarOpinion(opinion3); //Esto funciona pero está afuera del coverage
+		});
+		
 	}
 	
 	@Test
 	void vericifacionSiUnaMuestraEsVotadaPorExpertos() {
-		//SetUp
-		this.muestra1.agregarOpinion(opinion);
-		this.muestra1.agregarOpinion(opinion2);
-		this.muestra1.agregarOpinion(opinion3);
-		
 		//Mockeando las opiniones
 		when(opinion.esOpinadaPorExperto()).thenReturn(false);
 		when(opinion2.esOpinadaPorExperto()).thenReturn(true);
-		when(opinion3.esOpinadaPorExperto()).thenReturn(false);
 		
-		assertTrue(this.muestra1.esVotadaPorExpertos());
-	}
-	
-	@Test
-	void verificacionSiUnaMuestraEsVerificada() {
 		//SetUp
 		this.muestra1.agregarOpinion(opinion);
 		this.muestra1.agregarOpinion(opinion2);
-		this.muestra1.agregarOpinion(opinion3);
 		
-		//Mockeando las opiniones
-		when(opinion.esOpinadaPorExperto()).thenReturn(true);
-		when(opinion2.esOpinadaPorExperto()).thenReturn(false);
-		when(opinion3.esOpinadaPorExperto()).thenReturn(true);
-		
-		when(opinion.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		when(opinion3.getTipoDeOpinion()).thenReturn(TipoDeOpinion.PHTIACHINCHE);
-		
-		assertTrue(this.muestra1.esVerificada());
+		assertTrue(this.muestra1.esVotadaPorExpertos());
 	}
 	
 	@Test

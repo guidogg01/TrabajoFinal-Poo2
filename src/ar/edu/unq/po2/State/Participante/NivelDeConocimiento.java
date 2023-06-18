@@ -2,7 +2,9 @@ package ar.edu.unq.po2.State.Participante;
 
 import java.time.LocalDate;
 
+import ar.edu.unq.po2.Opinion;
 import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
 import ar.edu.unq.po2.State.Muestra.Muestra;
 
 public abstract class NivelDeConocimiento {
@@ -28,6 +30,8 @@ public abstract class NivelDeConocimiento {
 	}
 
 	public abstract void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion, LocalDate fechaDeCreacion);
+	
+	public abstract void verificacionDeEstado();
 
 	public abstract String nivelDeConocimiento();
 
@@ -40,5 +44,7 @@ public abstract class NivelDeConocimiento {
 	public boolean tieneVerificacionExterna() {
 		return this.getParticipante().tieneVerificacionExterna();
 	}
+
+	public abstract void enviarMuestra(TipoDeOpinion tipoDeVinchuca, Ubicacion ubicacion, LocalDate fechaDeCreacion);
 	
 }

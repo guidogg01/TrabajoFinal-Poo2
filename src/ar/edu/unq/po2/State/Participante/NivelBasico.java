@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import ar.edu.unq.po2.Opinion;
 import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
 import ar.edu.unq.po2.State.Muestra.Muestra;
 
 public class NivelBasico extends NivelDeConocimiento {
@@ -18,18 +19,14 @@ public class NivelBasico extends NivelDeConocimiento {
 	}
 
 	@Override
-	public void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion, LocalDate fechaDeCreacion) {
-		if(muestra.esVerificada() 
-		   || this.getParticipante().esMiMuestra(muestra) 
-		   || this.getParticipante().opineSobre(muestra) 
-		   || muestra.esVotadaPorExpertos()) {
-			throw new IllegalArgumentException("Error, no es posible realizar la opinion.");
+	public void verificacionDeEstado() {
+		
+		if (super.participoEnMuestrasYOpiniones(10, 20)) {
+			this.getParticipante().setNivelDeConocimiento(new NivelExperto(this.getParticipante()));
 		}
 		
-		Opinion nuevaOpinion = new Opinion(tipoDeOpinion, this.getParticipante(), fechaDeCreacion);
-		muestra.agregarOpinion(nuevaOpinion);
-		this.getParticipante().agregarOpinion(nuevaOpinion);
 	}
+	
 
 	@Override
 	public String nivelDeConocimiento() {
@@ -44,6 +41,33 @@ public class NivelBasico extends NivelDeConocimiento {
 		}
 		
 		return mensajeEsperado;
+	}
+
+	@Override
+	public void enviarMuestra(TipoDeOpinion tipoDeVinchuca, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
+		Muestra muestraAEnviar = new Muestra(tipoDeVinchuca, this.getParticipante(), ubicacion, fechaDeCreacion);
+		
+		this.getParticipante().agregarMuestraAPagina(muestraAEnviar);
+		
+		this.getParticipante().agregarMuestra(muestraAEnviar);
+		
+		this.verificacionDeEstado();
+		
+	}
+
+	@Override
+	public void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion, LocalDate fechaDeCreacion) {
+		
+		if(this.getParticipante().esMiMuestra(muestra) || this.getParticipante().opineSobre(muestra)) {
+			throw new IllegalArgumentException("Error, no es posible realizar la opinion.");
+		}
+				
+		Opinion nuevaOpinion = new Opinion(tipoDeOpinion, this.getParticipante(), fechaDeCreacion);
+		muestra.agregarOpinion(nuevaOpinion);
+		this.getParticipante().agregarOpinion(nuevaOpinion);
+			
+		this.verificacionDeEstado();
+		
 	}
 
 }

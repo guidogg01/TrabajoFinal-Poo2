@@ -139,12 +139,11 @@ public class Muestra {
 	public boolean coincidieronExpertos() {
 		// agarra todos los expertos que hayan votado, y se fija si hay al menos 2 que opinan lo mismo.		
 		return (this.opinionesDeExpertos().size() > 1)
-			   &&
+			    &&
 			   (this.opinionesDeExpertos().stream()
-				                         .anyMatch(tipoDeOpinion1 -> this.opinionesDeExpertos()
-				                           .stream()
-				                	       .anyMatch(tipoDeOpinion2 -> tipoDeOpinion1.equals(tipoDeOpinion2))));
-	} 
+		                                  .distinct()
+		                                  .count() != this.opinionesDeExpertos().size());
+	}
 	
 	public TipoDeOpinion resultadoActual() { //TESTEAR
 		return this.getEstadoActual().resultadoActual();
@@ -213,11 +212,6 @@ public class Muestra {
 	
 	public boolean esVotadaPorExpertos() {
 		return this.getParticipante().esExperto() || this.getOpiniones().stream().anyMatch(o -> o.esOpinadaPorExperto());
-	}
-
-	public boolean esVerificada() {
-		// Se crea en mensaje esVerificada debido a que genera una mayor abstracción.
-		return this.coincidieronExpertos();
 	}
 
 	public boolean elParticipanteYaOpino(Participante participante) {

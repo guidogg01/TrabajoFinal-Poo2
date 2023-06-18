@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
 import ar.edu.unq.po2.State.Muestra.Muestra;
 
 class NivelExpertoVerificadoTestCase {
@@ -17,6 +18,8 @@ class NivelExpertoVerificadoTestCase {
 	private NivelExpertoVerificado nivelExpertoVerificado;
 	
 	private Muestra muestra;
+	
+	private Ubicacion ubicacion;
 
 	private Participante participante;
 	
@@ -26,6 +29,8 @@ class NivelExpertoVerificadoTestCase {
 		participante  = mock(Participante.class); 
 		
 		muestra = mock(Muestra.class);
+		
+		ubicacion = mock(Ubicacion.class);
 		
 		nivelExpertoVerificado  = new NivelExpertoVerificado(participante);
 		
@@ -49,10 +54,7 @@ class NivelExpertoVerificadoTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoUnNivelExpertoVerificadoOpinaSobreUnaMuestra() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(false);
-		
+	void verificacionCuandoUnNivelExpertoVerificadoOpinaSobreUnaMuestra() {		
 		//Mockeando el participante
 		when(participante.esMiMuestra(muestra)).thenReturn(false);
 		when(participante.opineSobre(muestra)).thenReturn(false);
@@ -63,29 +65,10 @@ class NivelExpertoVerificadoTestCase {
 		//Verify
 		verify(muestra, times(1)).agregarOpinion(Mockito.any());
 		verify(participante, times(1)).agregarOpinion(Mockito.any());
-	}
+	}	
 	
 	@Test
-	void verificacionCuandoUnNivelExpertoVerificadoNoPuedeOpinarSobreUnaMuestraVerificada() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(true);
-		
-		//Mockeando el participante
-		when(participante.esMiMuestra(muestra)).thenReturn(false);
-		when(participante.opineSobre(muestra)).thenReturn(false);
-		
-		//Exercise
-		assertThrows(IllegalArgumentException.class, () -> {
-			this.nivelExpertoVerificado.opinarSobre(this.muestra, TipoDeOpinion.IMAGENPOCOCLARA, LocalDate.of(2023, 6, 11)); //Esto funciona pero está afuera del coverage
-		});
-	}
-	
-	
-	@Test
-	void verificacionCuandoUnNivelExpertoVerificadoNoPuedeOpinarSobreUnaMuestraVotadaPorExpertos() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(false);
-		
+	void verificacionCuandoUnNivelExpertoVerificadoNoPuedeOpinarSobreUnaMuestraQueEsDelParticipante() {
 		//Mockeando el participante
 		when(participante.esMiMuestra(muestra)).thenReturn(true);
 		when(participante.opineSobre(muestra)).thenReturn(false);
@@ -97,10 +80,7 @@ class NivelExpertoVerificadoTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoUnNivelExpertoVerificadoNoPuedeOpinarSobreUnaMuestraQueEsDelParticipante() { 
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(false);
-		
+	void verificacionCuandoUnNivelExpertoVerificadoNoPuedeOpinarSobreUnaMuestraQueYaFueOpinadaPorElParticipante() { 
 		//Mockeando el participante
 		when(participante.esMiMuestra(muestra)).thenReturn(false);
 		when(participante.opineSobre(muestra)).thenReturn(true);
@@ -109,6 +89,17 @@ class NivelExpertoVerificadoTestCase {
 		assertThrows(IllegalArgumentException.class, () -> {
 			this.nivelExpertoVerificado.opinarSobre(this.muestra, TipoDeOpinion.IMAGENPOCOCLARA, LocalDate.of(2023, 6, 11)); //Esto funciona pero está afuera del coverage
 		});
+	}
+	
+	@Test
+	void verificacionCuandoSeEnviaUnaMuestraPorUnaParticipanteDeNivelExpertoVerificado() {
+		//Exercise
+		this.nivelExpertoVerificado.enviarMuestra(TipoDeOpinion.VINCHUCAGUASAYANA, this.ubicacion, LocalDate.of(2023, 5, 12));
+	
+		//Verify
+		verify(participante, times(1)).agregarMuestraAPagina(Mockito.any());
+		verify(participante, times(1)).agregarMuestra(Mockito.any());
+		
 	}
 	
 }

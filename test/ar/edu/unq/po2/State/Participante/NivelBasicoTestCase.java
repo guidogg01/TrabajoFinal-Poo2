@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import ar.edu.unq.po2.TipoDeOpinion;
+import ar.edu.unq.po2.Ubicacion;
 import ar.edu.unq.po2.State.Muestra.Muestra;
 
 class NivelBasicoTestCase {
@@ -17,6 +18,8 @@ class NivelBasicoTestCase {
 	private NivelBasico  nivelBasico;
 	
 	private Muestra muestra;
+	
+	private Ubicacion ubicacion;
 	
 	private Participante participante;
 	
@@ -26,6 +29,8 @@ class NivelBasicoTestCase {
 		participante = mock(Participante.class); 
 		
 		muestra = mock(Muestra.class);
+		
+		ubicacion = mock(Ubicacion.class);
 		
 		nivelBasico  = new NivelBasico(participante);
 		
@@ -72,11 +77,7 @@ class NivelBasicoTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoUnNivelBasicoOpinaSobreUnaMuestra() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(false);
-		when(muestra.esVotadaPorExpertos()).thenReturn(false);
-		
+	void verificacionCuandoUnNivelBasicoOpinaSobreUnaMuestra() {		
 		//Mockeando el participante
 		when(participante.esMiMuestra(muestra)).thenReturn(false);
 		when(participante.opineSobre(muestra)).thenReturn(false);
@@ -90,43 +91,7 @@ class NivelBasicoTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoUnNivelBasicoNoPuedeOpinarSobreUnaMuestraVerificada() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(true);
-		when(muestra.esVotadaPorExpertos()).thenReturn(false);
-		
-		//Mockeando el participante
-		when(participante.esMiMuestra(muestra)).thenReturn(false);
-		when(participante.opineSobre(muestra)).thenReturn(false);
-		
-		//Exercise
-		assertThrows(IllegalArgumentException.class, () -> {
-			this.nivelBasico.opinarSobre(this.muestra, TipoDeOpinion.IMAGENPOCOCLARA, LocalDate.of(2023, 6, 11)); //Esto funciona pero está afuera del coverage
-		});
-	}
-	
-	@Test
-	void verificacionCuandoUnNivelBasicoNoPuedeOpinarSobreUnaMuestraVotadaPorExpertos() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(false);
-		when(muestra.esVotadaPorExpertos()).thenReturn(true);
-		
-		//Mockeando el participante
-		when(participante.esMiMuestra(muestra)).thenReturn(false);
-		when(participante.opineSobre(muestra)).thenReturn(false);
-		
-		//Exercise
-		assertThrows(IllegalArgumentException.class, () -> {
-			this.nivelBasico.opinarSobre(this.muestra, TipoDeOpinion.IMAGENPOCOCLARA, LocalDate.of(2023, 6, 11)); //Esto funciona pero está afuera del coverage
-		});
-	}
-	
-	@Test
-	void verificacionCuandoUnNivelBasicoNoPuedeOpinarSobreUnaMuestraQueEsDelParticipante() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(false);
-		when(muestra.esVotadaPorExpertos()).thenReturn(false);
-		
+	void verificacionCuandoUnNivelBasicoNoPuedeOpinarSobreUnaMuestraQueEsDelParticipante() {		
 		//Mockeando el participante
 		when(participante.esMiMuestra(muestra)).thenReturn(true);
 		when(participante.opineSobre(muestra)).thenReturn(false);
@@ -138,11 +103,7 @@ class NivelBasicoTestCase {
 	}
 	
 	@Test
-	void verificacionCuandoUnNivelBasicoNoPuedeOpinarSobreUnaMuestraQueYaFueOpinadaPorElParticipante() {
-		//Mockeando la muestra
-		when(muestra.esVerificada()).thenReturn(false);
-		when(muestra.esVotadaPorExpertos()).thenReturn(false);
-		
+	void verificacionCuandoUnNivelBasicoNoPuedeOpinarSobreUnaMuestraQueYaFueOpinadaPorElParticipante() {		
 		//Mockeando el participante
 		when(participante.esMiMuestra(muestra)).thenReturn(false);
 		when(participante.opineSobre(muestra)).thenReturn(true);
@@ -152,5 +113,44 @@ class NivelBasicoTestCase {
 			this.nivelBasico.opinarSobre(this.muestra, TipoDeOpinion.IMAGENPOCOCLARA, LocalDate.of(2023, 6, 11)); //Esto funciona pero está afuera del coverage
 		});
 	}
-
+	
+	@Test
+	void verificacionCuandoSeEnviaUnaMuestraPorUnaParticipanteDeNivelBasico() {
+		//Exercise
+		this.nivelBasico.enviarMuestra(TipoDeOpinion.VINCHUCAGUASAYANA, this.ubicacion, LocalDate.of(2023, 5, 12));
+	
+		//Verify
+		verify(participante, times(1)).agregarMuestraAPagina(Mockito.any());
+		verify(participante, times(1)).agregarMuestra(Mockito.any());
+		verify(participante, never()).setNivelDeConocimiento(Mockito.any());
+		
+	}
+	
+	@Test
+	void verificacionDeEstadoDeUnNivelBasicoYSigueSiendoBasico() {
+		//Mockeando al participante
+		when(participante.realizoMuestrasEnElUltimoMes(10)).thenReturn(false);
+		when(participante.realizoOpinionesEnElUltimoMes(20)).thenReturn(true);
+		
+		//Exercise
+		this.nivelBasico.verificacionDeEstado();
+		
+		//Verify
+		verify(participante, never()).setNivelDeConocimiento(Mockito.any());
+		
+	}
+	
+	@Test
+	void verificacionDeEstadoDeUnNivelBasicoYPasaANivelExperto() {
+		//Mockeando al participante
+		when(participante.realizoMuestrasEnElUltimoMes(10)).thenReturn(true);
+		when(participante.realizoOpinionesEnElUltimoMes(20)).thenReturn(true);
+		
+		//Exercise
+		this.nivelBasico.verificacionDeEstado();
+		
+		//Verify
+		verify(participante, times(1)).setNivelDeConocimiento(Mockito.any());
+		
+	}
 }

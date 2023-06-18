@@ -95,11 +95,7 @@ public class Participante {
 	}
 	
 	public void enviarMuestra(TipoDeOpinion tipoDeVinchuca, Ubicacion ubicacion, LocalDate fechaDeCreacion) {
-		Muestra muestraAEnviar = new Muestra(tipoDeVinchuca, this, ubicacion, fechaDeCreacion);
-		
-		this.getPagina().agregarMuestra(muestraAEnviar);
-		
-		this.agregarMuestra(muestraAEnviar);		
+		this.getNivelDeConocimiento().enviarMuestra(tipoDeVinchuca, ubicacion, fechaDeCreacion);
 	}
 	
 	public void opinarSobre(Muestra muestra, TipoDeOpinion tipoDeOpinion, LocalDate fechaDeCreacion) {
@@ -143,6 +139,10 @@ public class Participante {
 
 	public boolean opineSobre(Muestra muestra) {
 		return muestra.elParticipanteYaOpino(this);
+	}
+
+	public void agregarMuestraAPagina(Muestra muestraAEnviar) { //Testear
+		this.getPagina().agregarMuestra(muestraAEnviar);		
 	}
 
 }
