@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.Composite.Busqueda;
+import ar.edu.unq.po2.Observer.ZonaDeCobertura;
 import ar.edu.unq.po2.State.Muestra.Muestra;
 
 class PaginaTestCase {
@@ -20,7 +21,10 @@ class PaginaTestCase {
 	private Muestra muestra2;
 	private Muestra muestra3;
 	
+	private ZonaDeCobertura zonaDeCobertura1;
+	
 	private Busqueda busqueda;
+	
 	
 	@BeforeEach
 	void setUp() {
@@ -28,6 +32,8 @@ class PaginaTestCase {
 		muestra1 = mock(Muestra.class);
 		muestra2 = mock(Muestra.class);
 		muestra3 = mock(Muestra.class);
+		
+		zonaDeCobertura1 = mock(ZonaDeCobertura.class);
 		
 		busqueda = mock(Busqueda.class);
 		
@@ -38,14 +44,27 @@ class PaginaTestCase {
 	@Test
 	void verificacionDeInicializacionDeUnaPagina() {
 		assertTrue(this.pagina.getMuestras().isEmpty());
+		assertTrue(this.pagina.getZonasDeCobertura().isEmpty());
 	}
 	
 	@Test
 	void verificacionDeCuandoSeAgregaUnaMuestraAUnaPagina() {
-		//Excersice
+		//setUp
+		this.pagina.agregarZonaDeCobertura(zonaDeCobertura1);
+		
+		//Exersice
 		this.pagina.agregarMuestra(this.muestra1);
 		
 		assertFalse(this.pagina.getMuestras().isEmpty());
+		verify(zonaDeCobertura1, times(1)).agregarMuestra(muestra1);
+	}
+	
+	@Test
+	void verificacionDeCuandoSeAgregaUnaZonaDeCoberturaAUnaPagina() {
+		//Exercise
+		this.pagina.agregarZonaDeCobertura(this.zonaDeCobertura1);
+		
+		assertFalse(this.pagina.getZonasDeCobertura().isEmpty());
 	}
 	
 	@Test
